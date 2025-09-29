@@ -16,6 +16,7 @@
 * **delete_file(***file name***)**
 * **rename_file(***old name, new name***)**
 * **move_file(***source, destination***)**
+* **get_random_password() ->** str // random password
 
 # About Me
 
