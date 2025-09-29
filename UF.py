@@ -247,11 +247,3 @@ class UsableFunctions:
 
     # todo: More functions can be added here
 
-
-if __name__ == "__main__":
-    a = UsableFunctions
-    a.write_in_new_file("test.txt", "Hello, World!")
-    print(a.read_from_file("test.txt"))
-    print(a.rename_file("test.txt", "new_test.txt"))
-    print(a.move_file("new_test.txt", "./new_test.txt"))
-    print(a.delete_file("new_test.txt"))
