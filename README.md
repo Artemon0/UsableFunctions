@@ -16,3 +16,7 @@
 * **delete_file(***file name***)**
 * **rename_file(***old name, new name***)**
 * **move_file(***source, destination***)**
+
+# About Me
+
+I am Artem. If you want to help me, contact to the *Telegram:* **@Artemon0000**
