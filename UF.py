@@ -244,9 +244,8 @@ class UsableFunctions:
                 return "File does not exist"
         except Exception as e:
             return f"Error: {e}"
-    
+
     # todo: More functions can be added here
-    
 
 
 if __name__ == "__main__":
