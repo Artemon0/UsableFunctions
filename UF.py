@@ -248,13 +248,9 @@ class UsableFunctions:
 
     # todo: More functions can be added here
     def get_random_password():
-        num1 = chr(randint(40, 126))
-        num2 = chr(randint(40, 126))
-        num3 = chr(randint(40, 126))
-        num4 = chr(randint(40, 126))
-        num5 = chr(randint(40, 126))
-        num6 = chr(randint(40, 126))
-        num7 = chr(randint(40, 126))
-        num8 = chr(randint(40, 126))
-        password = num1 + num2 + num3 + num4 + num5 + num6 + num7 + num8
+        password = ""
+        for _ in range(8):  # Length of the password
+            char = chr(randint(33, 126))  # Printable ASCII characters
+            password += char
         return password
+
