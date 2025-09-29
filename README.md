@@ -19,4 +19,4 @@
 
 # About Me
 
-I am Artem. If you want to help me, contact to the *Telegram:* **@Artemon0000**
+I am Artem. If you want to help me, contact to the *Telegram:* **@Artemon0000([t.me](https://t.me/Artemon0000)).** My Telegram channel: [Telegram](https://t.me/AOGames888)
