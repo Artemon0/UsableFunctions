@@ -10,7 +10,7 @@ from tqdm import tqdm
 import time
 
 
-class UsableFunctios:
+class UsableFunctions:
     # ! Prints only one word !
     def printOne(self) -> None:
         print(self)
@@ -250,7 +250,7 @@ class UsableFunctios:
 
 
 if __name__ == "__main__":
-    a = UsableFunctios
+    a = UsableFunctions
     a.write_in_new_file("test.txt", "Hello, World!")
     print(a.read_from_file("test.txt"))
     print(a.rename_file("test.txt", "new_test.txt"))
