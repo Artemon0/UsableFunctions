@@ -293,3 +293,15 @@ class UsableFunctions:
 
     def get_progress_bar(iterable, desc="Processing", ncols=60):
         return tqdm(iterable, desc=desc, ncols=ncols)
+    
+    def update_this_program():
+        import subprocess
+        import sys
+
+        try:
+            subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "UsableFunctions"], check=True)
+            return "Update successful"
+        except subprocess.CalledProcessError as e:
+            return f"Update failed: {e}"
+        except Exception as e:
+            return f"Update failed: {e}"
