@@ -2,6 +2,8 @@
 
 `pip install -r requirenments.txt`
 
+[Site](https://artemon0.github.io/UsableFunctions/)
+
 # Functions:
 
 * **calculator(***a, b, operator***)**
