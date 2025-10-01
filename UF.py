@@ -253,7 +253,7 @@ class UsableFunctions:
             char = chr(randint(33, 126))  # Printable ASCII characters
             password += char
         return password
-    
+
     def factorial(n: int) -> int:
         if n < 0:
             return "Undefined for negative numbers"
@@ -264,8 +264,10 @@ class UsableFunctions:
             for i in range(2, n + 1):
                 result *= i
             return result
+
     def math_factorial(n: int) -> int:
         import math
+
         return math.factorial(n)
 
     def while_calculator():
