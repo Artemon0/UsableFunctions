@@ -253,4 +253,38 @@ class UsableFunctions:
             char = chr(randint(33, 126))  # Printable ASCII characters
             password += char
         return password
+    
+    def factorial(n: int) -> int:
+        if n < 0:
+            return "Undefined for negative numbers"
+        elif n == 0 or n == 1:
+            return 1
+        else:
+            result = 1
+            for i in range(2, n + 1):
+                result *= i
+            return result
+    def math_factorial(n: int) -> int:
+        import math
+        return math.factorial(n)
 
+    def while_calculator():
+        print("Welcome to the While Calculator!")
+        print("Type 'exit' to quit.")
+        while True:
+            a = input("Enter first number: ")
+            if a.lower() == "exit":
+                break
+            b = input("Enter second number: ")
+            if b.lower() == "exit":
+                break
+            op = input("Enter operator (+, -, *, /, %): ")
+            if op.lower() == "exit":
+                break
+            try:
+                a = float(a)
+                b = float(b)
+                result = UsableFunctions.calculator(a, b, op)
+                print(f"Result: {result}")
+            except ValueError:
+                print("Invalid input. Please enter numeric values.")
