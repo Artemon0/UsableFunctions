@@ -290,3 +290,6 @@ class UsableFunctions:
                 print(f"Result: {result}")
             except ValueError:
                 print("Invalid input. Please enter numeric values.")
+
+    def get_progress_bar(iterable, desc="Processing", ncols=60):
+        return tqdm(iterable, desc=desc, ncols=ncols)
