@@ -3,6 +3,7 @@
 `pip install -r requirements.txt`
 
 To install as a package: `pip install git+https://github.com/Artemon0/UsableFunctions.git `
+
 **`import UF.UsableFunctions`**
 
 ###### [Site](https://artemon0.github.io/UsableFunctions/)
