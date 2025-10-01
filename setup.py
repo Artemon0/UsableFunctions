@@ -10,5 +10,5 @@ setup(
     license="MIT",
     packages=find_namespace_packages(),
     install_requires=["tqdm", "PyInstaller"],
-    entry_points={"console_scripts": ["quest = UF.UsableFunctions:quest"]},
+    entry_points={"console_scripts": ["quest = UsableFunctions.UF:quest"]},
 )
