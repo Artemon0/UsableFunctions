@@ -46,6 +46,8 @@ class UsableFunctions:
                 return a % b
             except ZeroDivisionError:
                 return ZeroDivisionError
+        elif op == "**":
+            return a**b
 
         return "Invalid operator"
 
