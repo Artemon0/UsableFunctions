@@ -379,3 +379,10 @@ class UsableFunctions:
 
         pygame.quit()
         return pressed
+
+    def get_key():
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    return event.key
+    
