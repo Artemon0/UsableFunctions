@@ -26,6 +26,8 @@ To install as a package: `pip install --upgrade git+https://github.com/Artemon0/
 - **factorial(n) ->** int // factorial
 - **math-factorial(n)** -> int // math.factorial(n)
 - **while_calculator()** -> None // calculator in while True
+- **get_progress_bar(iterable, desc="Processing", ncols=60)**
+- **update_this_program()** // updating UsableFunctions
 
 # About Me
 
