@@ -1,3 +1,4 @@
+import UsableFunctions
 from UsableFunctions.UF import UsableFunctions as u
 
-print(u.calculator(1, 2, '+'))
+print(u.calculator(5, 7, '+'))
