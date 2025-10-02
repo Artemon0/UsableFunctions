@@ -309,20 +309,28 @@ class UsableFunctions:
 
     def update_this_program():
         try:
-            subprocess.run(
+            # subprocess.run(
+            #     [
+            #         sys.executable,
+            #         "-m",
+            #         "pip",
+            #         "install",
+            #         "--upgrade",
+            #         "UsableFunctions",
+            #     ],
+            #     check=True,
+            # )
+            subprocess.check_call(
                 [
                     sys.executable,
                     "-m",
                     "pip",
                     "install",
                     "--upgrade",
-                    "UsableFunctions",
-                ],
-                check=True,
+                    "git+https://github.com/Artemon0/UsableFunctions.git",
+                ]
             )
-            subprocess.run(
-                [sys.executable, "pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git"], check=True
-            )
+
             subprocess.run(
                 [sys.executable, "-m", "pip", "show", "UsableFunctions", ""], check=True
             )
