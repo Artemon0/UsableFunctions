@@ -46,7 +46,6 @@ print(u.calculator(5, 7, '+')) # print(5 + 7); return 5 + 7
 - **create_new_file(filename: str, content: str="", filepath: str=".")** // updated version of write_in_new_file
 - **read_file_content(filepath: str) -> str** // reads file
 - **is_pressed(key) -> bool** // key - pygame. **...**
-- **get_key() -> key** // returns presed key
 
 # About Me
 
