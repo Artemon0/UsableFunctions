@@ -49,4 +49,4 @@ print(u.calculator(5, 7, '+')) # print(5 + 7); return 5 + 7
 
 # About Me
 
-I am Artem, Ukraine. If you want to help me, contact to the _Telegram:_ **@Artemon0000([t.me]()).** My Telegram channel: [Telegram](https://t.me/AOGames888)
+I am Artem. If you want to help me, contact to the _Telegram:_ **@Artemon0000([t.me]()).** My Telegram channel: [Telegram](https://t.me/AOGames888)
