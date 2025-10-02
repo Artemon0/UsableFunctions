@@ -328,3 +328,12 @@ class UsableFunctions:
             return f"Update failed: {e}"
         except Exception as e:
             return f"Update failed: {e}"
+
+    def create_new_file(filename: str, content: str = "", filepath: str = "."):
+        try:
+            full_path = os.path.join(filepath, filename)
+            with open(full_path, "w") as file:
+                file.write(content)
+            return "Success"
+        except Exception as e:
+            return f"Error: {e}"

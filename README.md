@@ -40,6 +40,7 @@ print(u.calculator(5, 7, '+')) # print(5 + 7); return 5 + 7
 - **while_calculator()** -> None // calculator in while True
 - **get_progress_bar(iterable, desc="Processing", ncols=60)**
 - **update_this_program()** // updating UsableFunctions
+- **create_new_file(filename: str, content: str="", filepath: str=".")** // updated version of write_in_new_file
 
 # About Me
 
