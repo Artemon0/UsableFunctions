@@ -12,6 +12,7 @@ from random import randint
 import subprocess
 import sys
 import PyInstaller.__main__
+import pygame
 
 __version__ = "1.4.1"
 __author__ = "Artem Onyshchenko"
@@ -19,7 +20,7 @@ __email__ = "artemon888.com@gmail.com"
 __license__ = "MIT"
 __url__ = "https://github.com/Artemon0/UsableFunctions.git"
 __download_url__ = (
-    "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.4.0.tar.gz"
+    "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.4.1.tar.gz"
 )
 
 
@@ -356,3 +357,25 @@ class UsableFunctions:
             return content
         except Exception as e:
             return f"Error: {e}"
+
+    def is_pressed(key) -> bool:
+        pygame.init()
+        screen = pygame.display.set_mode((100, 100))
+        pygame.display.set_caption("Key Press Detector")
+        clock = pygame.time.Clock()
+        pressed = False
+        running = True
+
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == key:
+                        pressed = True
+                        running = False
+
+            clock.tick(30)
+
+        pygame.quit()
+        return pressed

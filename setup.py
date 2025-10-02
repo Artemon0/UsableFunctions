@@ -10,6 +10,6 @@ setup(
     author_email="artemon888.com@gmail.com",
     license="MIT",
     packages=find_namespace_packages(),
-    install_requires=["tqdm", "PyInstaller"],
+    install_requires=["tqdm", "PyInstaller", "pygame"],
     entry_points={"console_scripts": ["quest = UsableFunctions.UF:quest"]},
 )
