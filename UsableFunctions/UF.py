@@ -358,7 +358,7 @@ class UsableFunctions:
         except Exception as e:
             return f"Error: {e}"
 
-    def is_pressed(key) -> bool[True, False]:
+    def is_pressed(key) -> bool:
         pygame.init()
         pygame.display.set_mode((100, 100))
         pygame.display.set_caption("Key Press Detector")
@@ -380,9 +380,6 @@ class UsableFunctions:
         pygame.quit()
         return pressed
 
-    def get_key():
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    return event.key
+    
+    
     
