@@ -13,7 +13,7 @@ from random import randint
 import random
 
 import PyInstaller.__main__
-import pygame
+
 from tqdm import tqdm
 
 __version__ = "1.4.2"
@@ -359,7 +359,9 @@ class UsableFunctions:
         except Exception as e:
             return f"Error: {e}"
 
+    # ! key = example: key = pygame.K_a
     def is_pressed(key) -> bool:
+        import pygame # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
         pygame.init()
         pygame.display.set_mode((100, 100))
         pygame.display.set_caption("Key Press Detector")
@@ -380,4 +382,3 @@ class UsableFunctions:
 
         pygame.quit()
         return pressed
-
