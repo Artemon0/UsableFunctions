@@ -260,7 +260,7 @@ class UsableFunctions:
         except Exception as e:
             return f"Error: {e}"
 
-    # todo: More functions can be added here
+    # TODO: More functions can be added here
     def get_random_password(length: int = 8) -> str:
         password = ""
         for _ in range(length):  # Length of the password
