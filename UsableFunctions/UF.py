@@ -321,6 +321,12 @@ class UsableFunctions:
                 check=True,
             )
             subprocess.run(
+                [
+                    sys.executable,
+                    "pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git",
+                ]
+            )
+            subprocess.run(
                 [sys.executable, "-m", "pip", "show", "UsableFunctions", ""], check=True
             )
             return "Update successful"
