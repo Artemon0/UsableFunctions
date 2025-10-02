@@ -7,3 +7,8 @@ index.md
 functions.txt
 UsableFunctions.egg-info
 UFuse.py
+UFuse.py
+--- a/file:///d%3A/Python/MY/UsableFunctions/UFuse.py
+--- b/file:///d%3A/Python/MY/UsableFunctions/UFuse.py
++++ b/file:///d%3A/Python/MY/UsableFunctions/UFuse.py
+@@ -1,3 +1,4 @@
