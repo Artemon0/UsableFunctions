@@ -11,6 +11,7 @@ import time
 from random import randint
 import subprocess
 import sys
+import PyInstaller.__main__
 
 __version__ = "1.4.1"
 __author__ = "Artem Onyshchenko"
@@ -133,7 +134,6 @@ class UsableFunctions:
             with tqdm(total=100, desc="Converting", ncols=60) as pbar:
                 # * Подготовка
                 pbar.update(10)
-                import PyInstaller.__main__
 
                 # * Конвертация
                 pbar.update(40)
@@ -260,9 +260,9 @@ class UsableFunctions:
             return f"Error: {e}"
 
     # todo: More functions can be added here
-    def get_random_password():
+    def get_random_password(length: int = 8) -> str:
         password = ""
-        for _ in range(8):  # Length of the password
+        for _ in range(length):  # Length of the password
             char = chr(randint(33, 126))  # Printable ASCII characters
             password += char
         return password
