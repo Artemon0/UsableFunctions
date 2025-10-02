@@ -321,7 +321,7 @@ class UsableFunctions:
                 check=True,
             )
             subprocess.run(
-                [sys.executable, "-m", "pip", "install", "--upgarde","git+https://github.com/Artemon0/UsableFunctions.git"], check=True
+                [sys.executable, "pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git"], check=True
             )
             subprocess.run(
                 [sys.executable, "-m", "pip", "show", "UsableFunctions", ""], check=True
