@@ -15,7 +15,7 @@ pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git
 
 ```python
 from UsableFunctions.UF import UsableFunctions as u
-print(u.calculator(5, 7, '+'))
+print(u.calculator(5, 7, '+')) # print(5 + 7); return 5 + 7
 ```
 
 ## [Site](https://artemon0.github.io/UsableFunctions/)
