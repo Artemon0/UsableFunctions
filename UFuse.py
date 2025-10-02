@@ -1,3 +1,4 @@
 from UsableFunctions.UF import UsableFunctions
+import pygame
 
-# pip install .
+print(UsableFunctions.is_pressed(pygame.K_a))

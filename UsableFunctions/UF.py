@@ -10,7 +10,7 @@ import subprocess
 import sys
 import time
 from random import randint
-from typing import overload
+import random
 
 import PyInstaller.__main__
 import pygame
@@ -183,8 +183,7 @@ class UsableFunctions:
         else:
             return "Odd"
 
-    def game(self):
-        import random
+    def game():
 
         number_to_guess = random.randint(1, 100)
         attempts = 0
@@ -286,7 +285,7 @@ class UsableFunctions:
 
         return math.factorial(n)
 
-    def while_calculator(self):
+    def while_calculator():
         print("Welcome to the While Calculator!")
         print("Type 'exit' to quit.")
         while True:
