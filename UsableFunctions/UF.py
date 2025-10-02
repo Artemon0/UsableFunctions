@@ -17,8 +17,9 @@ __author__ = "Artem Onyshchenko"
 __email__ = "artemon888.com@gmail.com"
 __license__ = "MIT"
 __url__ = "https://github.com/Artemon0/UsableFunctions.git"
-__download_url__ = "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.3.1.tar.gz"
-
+__download_url__ = (
+    "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.3.1.tar.gz"
+)
 
 
 class UsableFunctions:
@@ -303,12 +304,23 @@ class UsableFunctions:
 
     def get_progress_bar(iterable, desc="Processing", ncols=60):
         return tqdm(iterable, desc=desc, ncols=ncols)
-    
-    def update_this_program():
 
+    def update_this_program():
         try:
-            subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "UsableFunctions"], check=True)
-            subprocess.run([sys.executable, "-m", "pip", "show", "UsableFunctions", ""], check=True)
+            subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "pip",
+                    "install",
+                    "--upgrade",
+                    "UsableFunctions",
+                ],
+                check=True,
+            )
+            subprocess.run(
+                [sys.executable, "-m", "pip", "show", "UsableFunctions", ""], check=True
+            )
             return "Update successful"
         except subprocess.CalledProcessError as e:
             return f"Update failed: {e}"

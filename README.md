@@ -7,15 +7,18 @@ pip install -r requirements.txt
 ## To install as a package:
 
 ```bash
-pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git 
+pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git
+
 ```
+
+## Example usage:
 
 ```python
 from UsableFunctions.UFimportUsableFunctions as u
 print(u.calculator(5, 7, '+'))
 ```
 
-###### [Site](https://artemon0.github.io/UsableFunctions/)
+## [Site](https://artemon0.github.io/UsableFunctions/)
 
 # Functions:
 
