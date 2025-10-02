@@ -1,10 +1,14 @@
 # Usable Functions
 
+**If you downloaded .zip**
+
 ```bash
 pip install -r requirements.txt
 ```
 
 ## To install as a package:
+
+**Nothing required**
 
 ```bash
 pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git
