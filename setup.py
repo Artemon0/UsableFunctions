@@ -5,7 +5,7 @@ setup(
     version="1.3.0",
     description="Very useful functions",
     url="https://github.com/Artemon0/UsableFunctions.git",
-    download_url='https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.2.0.tar.gz',
+    download_url='https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.3.0.tar.gz',
     author="Artem Onyshchenko",
     author_email="artemon888.com@gmail.com",
     license="MIT",
