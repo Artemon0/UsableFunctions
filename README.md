@@ -1,10 +1,19 @@
 # Usable Functions
 
-`pip install -r requirements.txt`
+```bash
+pip install -r requirements.txt
+```
 
-To install as a package: `pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git `
+To install as a package:
 
-**`import UF.UsableFunctions`**
+```bash
+pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git 
+```
+
+```python
+from UsableFunctions.UFimportUsableFunctions as u
+print(u.calculator(5, 7, '+'))
+```
 
 ###### [Site](https://artemon0.github.io/UsableFunctions/)
 
