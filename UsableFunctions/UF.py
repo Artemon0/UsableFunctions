@@ -6,13 +6,15 @@ Python files to executables, determining even or odd numbers, and playing a numb
 
 import os
 import shutil
-from tqdm import tqdm
-import time
-from random import randint
 import subprocess
 import sys
+import time
+from random import randint
+from typing import overload
+
 import PyInstaller.__main__
 import pygame
+from tqdm import tqdm
 
 __version__ = "1.4.2"
 __author__ = "Artem Onyshchenko"
@@ -26,7 +28,7 @@ __download_url__ = (
 
 class UsableFunctions:
     # ! Prints only one word !
-    def printOne(self) -> None:
+    def print_one(self) -> None:
         print(self)
         return None
 
@@ -49,7 +51,7 @@ class UsableFunctions:
             except ZeroDivisionError:
                 return ZeroDivisionError
         elif op == "**":
-            return a**b
+            return a ** b
 
         return "Invalid operator"
 
@@ -181,7 +183,7 @@ class UsableFunctions:
         else:
             return "Odd"
 
-    def game():
+    def game(self):
         import random
 
         number_to_guess = random.randint(1, 100)
@@ -268,7 +270,7 @@ class UsableFunctions:
             password += char
         return password
 
-    def factorial(n: int) -> int:
+    def factorial(n: int) -> str | int:
         if n < 0:
             return "Undefined for negative numbers"
         elif n == 0 or n == 1:
@@ -284,7 +286,7 @@ class UsableFunctions:
 
         return math.factorial(n)
 
-    def while_calculator():
+    def while_calculator(self):
         print("Welcome to the While Calculator!")
         print("Type 'exit' to quit.")
         while True:
@@ -308,7 +310,7 @@ class UsableFunctions:
     def get_progress_bar(iterable, desc="Processing", ncols=60):
         return tqdm(iterable, desc=desc, ncols=ncols)
 
-    def update_this_program():
+    def update_this_program(self):
         try:
             # subprocess.run(
             #     [
@@ -380,6 +382,3 @@ class UsableFunctions:
         pygame.quit()
         return pressed
 
-    
-    
-    

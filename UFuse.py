@@ -1,4 +1,3 @@
-from UsableFunctions.UF import UsableFunctions as uf
-import pygame
+from UsableFunctions.UF import UsableFunctions
 
-uf.get_key()
+# pip install .

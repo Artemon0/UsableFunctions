@@ -11,5 +11,5 @@ setup(
     license="MIT",
     packages=find_namespace_packages(),
     install_requires=["tqdm", "PyInstaller", "pygame"],
-    entry_points={"console_scripts": ["quest = UsableFunctions.UF:quest"]},
+    # entry_points={"console_scripts": ["quest = UsableFunctions.UF:quest"]},
 )

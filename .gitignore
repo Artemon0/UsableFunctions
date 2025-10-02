@@ -13,3 +13,6 @@ UFuse.py
 +++ b/file:///d%3A/Python/MY/UsableFunctions/UFuse.py
 @@ -1,3 +1,4 @@
 ./UFuse.py
+.idea
+.zencoder
+build
