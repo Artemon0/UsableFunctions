@@ -9,6 +9,8 @@ import shutil
 from tqdm import tqdm
 import time
 from random import randint
+import subprocess
+import sys
 
 
 class UsableFunctions:
@@ -295,8 +297,6 @@ class UsableFunctions:
         return tqdm(iterable, desc=desc, ncols=ncols)
     
     def update_this_program():
-        import subprocess
-        import sys
 
         try:
             subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "UsableFunctions"], check=True)
