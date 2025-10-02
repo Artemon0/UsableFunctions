@@ -4,7 +4,7 @@
 pip install -r requirements.txt
 ```
 
-To install as a package:
+## To install as a package:
 
 ```bash
 pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git 
