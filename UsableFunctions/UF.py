@@ -337,3 +337,11 @@ class UsableFunctions:
             return "Success"
         except Exception as e:
             return f"Error: {e}"
+    
+    def read_file_content(filepath: str) -> str:
+        try:
+            with open(filepath, "r") as file:
+                content = file.read()
+            return content
+        except Exception as e:
+            return f"Error: {e}"
