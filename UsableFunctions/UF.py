@@ -308,6 +308,7 @@ class UsableFunctions:
 
         try:
             subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "UsableFunctions"], check=True)
+            subprocess.run([sys.executable, "-m", "pip", "show", "UsableFunctions", ""], check=True)
             return "Update successful"
         except subprocess.CalledProcessError as e:
             return f"Update failed: {e}"

@@ -1,4 +1,4 @@
 # import UsableFunctions
 from UsableFunctions.UF import UsableFunctions as u
 
-print(u.calculator(5, 7, '+'))
+u.update_this_program()
