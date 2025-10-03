@@ -359,7 +359,7 @@ class UsableFunctions:
         except Exception as e:
             return f"Error: {e}"
 
-    # ! key = example: key = pygame.K_a
+    # ! example: key = pygame.K_a
     def is_pressed(key) -> bool:
         import pygame # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
         pygame.init()
