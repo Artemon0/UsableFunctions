@@ -5,15 +5,14 @@ Python files to executables, determining even or odd numbers, and playing a numb
 """
 
 import os
+import random
 import shutil
 import subprocess
 import sys
 import time
 from random import randint
-import random
 
 import PyInstaller.__main__
-
 from tqdm import tqdm
 
 __version__ = "1.4.2"
@@ -292,11 +291,11 @@ class UsableFunctions:
             a = input("Enter first number: ")
             if a.lower() == "exit":
                 break
-            b = input("Enter second number: ")
-            if b.lower() == "exit":
-                break
             op = input("Enter operator (+, -, *, /, %): ")
             if op.lower() == "exit":
+                break
+            b = input("Enter second number: ")
+            if b.lower() == "exit":
                 break
             try:
                 a = float(a)
@@ -306,79 +305,85 @@ class UsableFunctions:
             except ValueError:
                 print("Invalid input. Please enter numeric values.")
 
-    def get_progress_bar(iterable, desc="Processing", ncols=60):
-        return tqdm(iterable, desc=desc, ncols=ncols)
 
-    def update_this_program(self):
-        try:
-            # subprocess.run(
-            #     [
-            #         sys.executable,
-            #         "-m",
-            #         "pip",
-            #         "install",
-            #         "--upgrade",
-            #         "UsableFunctions",
-            #     ],
-            #     check=True,
-            # )
-            subprocess.check_call(
-                [
-                    sys.executable,
-                    "-m",
-                    "pip",
-                    "install",
-                    "--upgrade",
-                    "git+https://github.com/Artemon0/UsableFunctions.git",
-                ]
-            )
+def get_progress_bar(iterable, desc="Processing", ncols=60):
+    return tqdm(iterable, desc=desc, ncols=ncols)
 
-            subprocess.run(
-                [sys.executable, "-m", "pip", "show", "UsableFunctions", ""], check=True
-            )
-            return "Update successful"
-        except subprocess.CalledProcessError as e:
-            return f"Update failed: {e}"
-        except Exception as e:
-            return f"Update failed: {e}"
 
-    def create_new_file(filename: str, content: str = "", filepath: str = "."):
-        try:
-            full_path = os.path.join(filepath, filename)
-            with open(full_path, "w") as file:
-                file.write(content)
-            return "Success"
-        except Exception as e:
-            return f"Error: {e}"
+def update_this_program(self):
+    try:
+        # subprocess.run(
+        #     [
+        #         sys.executable,
+        #         "-m",
+        #         "pip",
+        #         "install",
+        #         "--upgrade",
+        #         "UsableFunctions",
+        #     ],
+        #     check=True,
+        # )
+        subprocess.check_call(
+            [
+                sys.executable,
+                "-m",
+                "pip",
+                "install",
+                "--upgrade",
+                "git+https://github.com/Artemon0/UsableFunctions.git",
+            ]
+        )
 
-    def read_file_content(filepath: str) -> str:
-        try:
-            with open(filepath, "r") as file:
-                content = file.read()
-            return content
-        except Exception as e:
-            return f"Error: {e}"
+        subprocess.run(
+            [sys.executable, "-m", "pip", "show", "UsableFunctions", ""], check=True
+        )
+        return "Update successful"
+    except subprocess.CalledProcessError as e:
+        return f"Update failed: {e}"
+    except Exception as e:
+        return f"Update failed: {e}"
 
-    # ! example: key = pygame.K_a
-    def is_pressed(key) -> bool:
-        import pygame # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
-        pygame.init()
-        pygame.display.set_mode((100, 100))
-        pygame.display.set_caption("Key Press Detector")
-        clock = pygame.time.Clock()
-        pressed = False
-        running = True
 
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+def create_new_file(filename: str, content: str = "", filepath: str = "."):
+    try:
+        full_path = os.path.join(filepath, filename)
+        with open(full_path, "w") as file:
+            file.write(content)
+        return "Success"
+    except Exception as e:
+        return f"Error: {e}"
+
+
+def read_file_content(filepath: str) -> str:
+    try:
+        with open(filepath, "r") as file:
+            content = file.read()
+        return content
+    except Exception as e:
+        return f"Error: {e}"
+
+
+# ! example: key = pygame.K_a
+def is_pressed(key) -> bool:
+    import \
+        pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
+    pygame.init()
+    pygame.display.set_mode((100, 100))
+    pygame.display.set_caption("Key Press Detector")
+    clock = pygame.time.Clock()
+    pressed = False
+    running = True
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == key:
+                    pressed = True
                     running = False
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == key:
-                        pressed = True
-                        running = False
 
-            clock.tick(30)
+        clock.tick(30)
 
-        pygame.quit()
-        return pressed
+    pygame.quit()
+    return pressed
