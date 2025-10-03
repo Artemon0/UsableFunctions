@@ -1,4 +1,4 @@
-from UsableFunctions.UF import UsableFunctions as uf
+from UsableFunctions.UF import UsableFunctions
 
-uf.get_progress_bar()
-
+UF = UsableFunctions()
+UF.get
