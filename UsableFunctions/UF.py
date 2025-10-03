@@ -50,7 +50,7 @@ class UsableFunctions:
             except ZeroDivisionError:
                 return ZeroDivisionError
         elif op == "**":
-            return a ** b
+            return a**b
 
         return "Invalid operator"
 
@@ -183,7 +183,6 @@ class UsableFunctions:
             return "Odd"
 
     def game():
-
         number_to_guess = random.randint(1, 100)
         attempts = 0
         print("Welcome to the Number Guessing Game!")
@@ -305,10 +304,9 @@ class UsableFunctions:
             except ValueError:
                 print("Invalid input. Please enter numeric values.")
 
-
+    @staticmethod
     def get_progress_bar(iterable, desc="Processing", ncols=60):
         return tqdm(iterable, desc=desc, ncols=ncols)
-
 
     def update_this_program(self):
         try:
@@ -343,7 +341,6 @@ class UsableFunctions:
         except Exception as e:
             return f"Update failed: {e}"
 
-
     def create_new_file(filename: str, content: str = "", filepath: str = "."):
         try:
             full_path = os.path.join(filepath, filename)
@@ -353,7 +350,6 @@ class UsableFunctions:
         except Exception as e:
             return f"Error: {e}"
 
-
     def read_file_content(filepath: str) -> str:
         try:
             with open(filepath, "r") as file:
@@ -362,11 +358,10 @@ class UsableFunctions:
         except Exception as e:
             return f"Error: {e}"
 
-
     # ! example: key = pygame.K_a
     def is_pressed(key) -> bool:
-        import \
-            pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
+        import pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
+
         pygame.init()
         pygame.display.set_mode((100, 100))
         pygame.display.set_caption("Key Press Detector")
@@ -387,3 +382,23 @@ class UsableFunctions:
 
         pygame.quit()
         return pressed
+
+    def install_package(package: str) -> str:
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+            return "Success"
+        except subprocess.CalledProcessError as e:
+            return f"Installation failed: {e}"
+        except Exception as e:
+            return f"Installation failed: {e}"
+
+    def uninstall_package(package: str) -> str:
+        try:
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "uninstall", "-y", package]
+            )
+            return "Success"
+        except subprocess.CalledProcessError as e:
+            return f"Uninstallation failed: {e}"
+        except Exception as e:
+            return f"Uninstallation failed: {e}"
