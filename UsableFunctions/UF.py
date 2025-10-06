@@ -11,6 +11,7 @@ import subprocess
 import sys
 import time
 from random import randint
+from subprocess import check_call
 
 import PyInstaller.__main__
 from tqdm import tqdm
@@ -50,7 +51,7 @@ class UsableFunctions:
             except ZeroDivisionError:
                 return ZeroDivisionError
         elif op == "**":
-            return a**b
+            return a ** b
 
         return "Invalid operator"
 
@@ -308,7 +309,8 @@ class UsableFunctions:
     def get_progress_bar(iterable, desc="Processing", ncols=60):
         return tqdm(iterable, desc=desc, ncols=ncols)
 
-    def update_this_program(self):
+    @staticmethod
+    def update_this_program():
         try:
             # subprocess.run(
             #     [
@@ -360,7 +362,8 @@ class UsableFunctions:
 
     # ! example: key = pygame.K_a
     def is_pressed(key) -> bool:
-        import pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
+        import \
+            pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
 
         pygame.init()
         pygame.display.set_mode((100, 100))
@@ -402,3 +405,59 @@ class UsableFunctions:
             return f"Uninstallation failed: {e}"
         except Exception as e:
             return f"Uninstallation failed: {e}"
+
+    def install_package_git(
+            github_full_https: str, package_name: str = "UsableFunctions", creator_name: str = "Artemon0",
+    ):  # example: git+https://github.com/Artemon0/UsableFunctions.git
+
+        with tqdm(total=100, desc="Updating package", ncols=100) as pbar:
+            if github_full_https:
+                pbar.update(20)
+                try:
+                    process = check_call(
+                        [
+                            sys.executable,
+                            "-m",
+                            "pip",
+                            "install",
+                            "--upgrade",
+                            f"git+{github_full_https}",
+                        ],
+                        stderr=False,
+                        stdout=False
+                    )
+                    for _ in range(80):
+                        time.sleep(0.01)
+                        pbar.update(1)
+
+                    res = {"success": True, "message": "Update finished!"}
+                    print(res)
+                    return res
+                except Exception as e:
+                    pbar.update(100)
+                    return {"success": False, "message": f"Update failed: {str(e)}"}
+            else:
+                pbar.update(20)
+                try:
+                    check_call(
+                        [
+                            sys.executable,
+                            "-m",
+                            "pip",
+                            "install",
+                            "--upgrade",
+                            f"git+https://github.com/{creator_name}/{package_name}.git",
+                        ],
+                        stderr=False,
+                        stdout=False
+                    )
+                    for _ in range(80):
+                        time.sleep(0.01)
+                        pbar.update(1)
+
+                    res = {"success": True, "message": "Update finished!"}
+                    print(res)
+                    return res
+                except Exception as e:
+                    pbar.update(100)
+                    return {"success": False, "message": f"Update failed: {str(e)}"}
