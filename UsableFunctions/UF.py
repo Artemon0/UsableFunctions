@@ -11,7 +11,6 @@ import subprocess
 import sys
 import time
 from random import randint
-from subprocess import check_call
 
 import PyInstaller.__main__
 from tqdm import tqdm
@@ -406,58 +405,31 @@ class UsableFunctions:
         except Exception as e:
             return f"Uninstallation failed: {e}"
 
+    @staticmethod
     def install_package_git(
-            github_full_https: str, package_name: str = "UsableFunctions", creator_name: str = "Artemon0",
-    ):  # example: git+https://github.com/Artemon0/UsableFunctions.git
+            full_git_url: str = "",
+            creator_name: str = "Artemon0",
+            repo_name: str = "UsableFunctions",
+    ) -> dict:
 
-        with tqdm(total=100, desc="Updating package", ncols=100) as pbar:
-            if github_full_https:
-                pbar.update(20)
-                try:
-                    check_call(
-                        [
-                            sys.executable,
-                            "-m",
-                            "pip",
-                            "install",
-                            "--upgrade",
-                            f"git+{github_full_https}",
-                        ],
-                        stderr=False,
-                        stdout=False
-                    )
-                    for _ in range(80):
-                        time.sleep(0.01)
-                        pbar.update(1)
+        with tqdm(total=100, desc="Installing", ncols=60) as pbar:
 
-                    res = {"success": True, "message": "Update finished!"}
-                    print(res)
-                    return res
-                except Exception as e:
-                    pbar.update(100)
-                    return {"success": False, "message": f"Update failed: {str(e)}"}
-            else:
-                pbar.update(20)
-                try:
-                    check_call(
-                        [
-                            sys.executable,
-                            "-m",
-                            "pip",
-                            "install",
-                            "--upgrade",
-                            f"git+https://github.com/{creator_name}/{package_name}.git",
-                        ],
-                        stderr=False,
-                        stdout=False
-                    )
-                    for _ in range(80):
-                        time.sleep(0.01)
-                        pbar.update(1)
-
-                    res = {"success": True, "message": "Update finished!"}
-                    print(res)
-                    return res
-                except Exception as e:
-                    pbar.update(100)
-                    return {"success": False, "message": f"Update failed: {str(e)}"}
+            if not full_git_url:
+                full_git_url = f"https://github.com/{creator_name}/{repo_name}.git"
+            pbar.update(20)
+            try:
+                subprocess.check_call(
+                    [sys.executable, "-m", "pip", "install", f"git+{full_git_url}"],
+                    stdout=False,
+                    stderr=False,
+                )
+                for _ in range(80):
+                    time.sleep(0.02)
+                    pbar.update(1)
+                return {"status": "Success", "url": full_git_url}
+            except subprocess.CalledProcessError as e:
+                pbar.update(80)
+                return {"status": "Installation failed", "error": str(e), "url": full_git_url}
+            except Exception as e:
+                pbar.update(80)
+                return {"status": "Installation failed", "error": str(e), "url": full_git_url}
