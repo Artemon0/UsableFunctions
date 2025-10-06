@@ -15,13 +15,13 @@ from random import randint
 import PyInstaller.__main__
 from tqdm import tqdm
 
-__version__ = "1.5.1"
+__version__ = "1.5.0"
 __author__ = "Artem Onyshchenko"
 __email__ = "artemon888.com@gmail.com"
 __license__ = "MIT"
 __url__ = "https://github.com/Artemon0/UsableFunctions.git"
 __download_url__ = (
-    "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.5.1.tar.gz"
+    "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.5.0.tar.gz"
 )
 
 
@@ -50,7 +50,7 @@ class UsableFunctions:
             except ZeroDivisionError:
                 return ZeroDivisionError
         elif op == "**":
-            return a ** b
+            return a**b
 
         return "Invalid operator"
 
@@ -309,54 +309,22 @@ class UsableFunctions:
         return tqdm(iterable, desc=desc, ncols=ncols)
 
     @staticmethod
-    def update_this_program(visual: bool = False) -> str:
+    def update_this_program():
         try:
-            # subprocess.run(
-            #     [
-            #         sys.executable,
-            #         "-m",
-            #         "pip",
-            #         "install",
-            #         "--upgrade",
-            #         "UsableFunctions",
-            #     ],
-            #     check=True,
-            # )
-
-            if visual:
-                with tqdm(total=100, smoothing=True, ncols=60, iterable=True, desc="Updating") as pbar:
-                    subprocess.check_call(
-                        [
-                            sys.executable,
-                            "-m",
-                            "pip",
-                            "install",
-                            "--upgrade",
-                            "git+https://github.com/Artemon0/UsableFunctions.git",
-                        ],
-                        stdout=False,
-                        stderr=False
-                    )
-                    pbar.update(20)
-                    time.sleep(1)
-                    for _ in range(80):
-                        time.sleep(0.02)
-                        pbar.update(1)
-
-            else:
-                subprocess.check_call(
-                    [
-                        sys.executable,
-                        "-m",
-                        "pip",
-                        "install",
-                        "--upgrade",
-                        "git+https://github.com/Artemon0/UsableFunctions.git",
-                    ]
-                )
+            subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "pip",
+                    "install",
+                    "--upgrade",
+                    "git+https://github.com/Artemon0/UsableFunctions.git",
+                ],
+                check=True,
+            )
 
             subprocess.run(
-                [sys.executable, "-m", "pip", "show", "UsableFunctions", ""], check=True
+                [sys.executable, "-m", "pip", "show", "UsableFunctions"], check=True
             )
             return "Update successful"
         except subprocess.CalledProcessError as e:
@@ -383,8 +351,7 @@ class UsableFunctions:
 
     # ! example: key = pygame.K_a
     def is_pressed(key) -> bool:
-        import \
-            pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
+        import pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
 
         pygame.init()
         pygame.display.set_mode((100, 100))
@@ -429,19 +396,17 @@ class UsableFunctions:
 
     @staticmethod
     def install_package_git(
-            full_git_url: str = "",
-            creator_name: str = "Artemon0",
-            repo_name: str = "UsableFunctions",
+        full_git_url: str = "",
+        creator_name: str = "Artemon0",
+        repo_name: str = "UsableFunctions",
     ) -> dict:
-
         with tqdm(total=100, desc="Installing", ncols=60) as pbar:
-
             if not full_git_url:
                 full_git_url = f"https://github.com/{creator_name}/{repo_name}.git"
             pbar.update(20)
             try:
                 subprocess.check_call(
-                    [sys.executable, "-m", "pip", "install", "--upgrade", f"git+{full_git_url}"],
+                    [sys.executable, "-m", "pip", "install", f"git+{full_git_url}"],
                     stdout=False,
                     stderr=False,
                 )
@@ -451,7 +416,57 @@ class UsableFunctions:
                 return {"status": "Success", "url": full_git_url}
             except subprocess.CalledProcessError as e:
                 pbar.update(80)
-                return {"status": "Installation failed", "error": str(e), "url": full_git_url}
+                return {
+                    "status": "Installation failed",
+                    "error": str(e),
+                    "url": full_git_url,
+                }
             except Exception as e:
                 pbar.update(80)
-                return {"status": "Installation failed", "error": str(e), "url": full_git_url}
+                return {
+                    "status": "Installation failed",
+                    "error": str(e),
+                    "url": full_git_url,
+                }
+
+    @staticmethod
+    def update_this_program_visual():
+        try:
+            with tqdm(total=100, desc="Updating", ncols=60, smoothing=True) as pbar:
+                # Начальный прогресс
+                pbar.update(20)
+
+                try:
+                    # Запуск обновления
+                    result = subprocess.run(
+                        [
+                            sys.executable,
+                            "-m",
+                            "pip",
+                            "install",
+                            "--upgrade",
+                            "git+https://github.com/Artemon0/UsableFunctions.git",
+                        ],
+                        capture_output=True,
+                        check=False,
+                    )
+
+                    # Имитация прогресса установки
+                    for _ in range(60):
+                        time.sleep(0.02)
+                        pbar.update(1)
+
+                    # Финальное обновление и проверка результата
+                    if result.returncode == 0:
+                        pbar.update(20)
+                        return "Update successful"
+                    else:
+                        pbar.update(20)
+                        return f"Update failed: {result.stderr}"
+
+                except subprocess.CalledProcessError as e:
+                    pbar.update(80)
+                    return f"Update failed: {e.stderr}"
+
+        except Exception as e:
+            return f"Update failed: {str(e)}"
