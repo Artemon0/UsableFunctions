@@ -309,7 +309,7 @@ class UsableFunctions:
         return tqdm(iterable, desc=desc, ncols=ncols)
 
     @staticmethod
-    def update_this_program():
+    def update_this_program(visual: bool = False):
         try:
             # subprocess.run(
             #     [
@@ -322,16 +322,38 @@ class UsableFunctions:
             #     ],
             #     check=True,
             # )
-            subprocess.check_call(
-                [
-                    sys.executable,
-                    "-m",
-                    "pip",
-                    "install",
-                    "--upgrade",
-                    "git+https://github.com/Artemon0/UsableFunctions.git",
-                ]
-            )
+
+            if visual:
+                with tqdm(total=100, smoothing=True, ncols=60, iterable=True, desc="Updating") as pbar:
+                    subprocess.check_call(
+                        [
+                            sys.executable,
+                            "-m",
+                            "pip",
+                            "install",
+                            "--upgrade",
+                            "git+https://github.com/Artemon0/UsableFunctions.git",
+                        ],
+                        stdout=False,
+                        stderr=False
+                    )
+                    pbar.update(20)
+                    time.sleep(1)
+                    for _ in range(80):
+                        time.sleep(0.02)
+                        pbar.update(1)
+
+            else:
+                subprocess.check_call(
+                    [
+                        sys.executable,
+                        "-m",
+                        "pip",
+                        "install",
+                        "--upgrade",
+                        "git+https://github.com/Artemon0/UsableFunctions.git",
+                    ]
+                )
 
             subprocess.run(
                 [sys.executable, "-m", "pip", "show", "UsableFunctions", ""], check=True
