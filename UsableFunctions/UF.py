@@ -419,7 +419,7 @@ class UsableFunctions:
             pbar.update(20)
             try:
                 subprocess.check_call(
-                    [sys.executable, "-m", "pip", "install", f"git+{full_git_url}"],
+                    [sys.executable, "-m", "pip", "install", "--upgrade", f"git+{full_git_url}"],
                     stdout=False,
                     stderr=False,
                 )
