@@ -309,7 +309,7 @@ class UsableFunctions:
         return tqdm(iterable, desc=desc, ncols=ncols)
 
     @staticmethod
-    def update_this_program(visual: bool = False):
+    def update_this_program(visual: bool = False) -> str:
         try:
             # subprocess.run(
             #     [
