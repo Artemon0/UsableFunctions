@@ -46,6 +46,10 @@ print(u.calculator(5, 7, '+')) # print(5 + 7); return 5 + 7
 - **create_new_file(filename: str, content: str="", filepath: str=".")** // updated version of write_in_new_file
 - **read_file_content(filepath: str) -> str** // reads file
 - **is_pressed(key) -> bool** // key - pygame. **...**
+- **install_package(package: str)** // pip install **...**
+- **uninstall_package(package: str)** // pip uninstall **...**
+- **install_package_git(github_full_https: str, package_name: str = "UsableFunctions", creator_name: str = "Artemon0")** // pip install **git+...**
+
 
 # About Me
 
