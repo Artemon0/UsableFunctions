@@ -414,7 +414,7 @@ class UsableFunctions:
             if github_full_https:
                 pbar.update(20)
                 try:
-                    process = check_call(
+                    check_call(
                         [
                             sys.executable,
                             "-m",
