@@ -42,14 +42,13 @@ print(u.calculator(5, 7, '+')) # print(5 + 7); return 5 + 7
 - **math-factorial(n)** -> int // math.factorial(n)
 - **while_calculator()** -> None // calculator in while True
 - **get_progress_bar(iterable, desc="Processing", ncols=60)**
-- **update_this_program()** // updating UsableFunctions
+- **update_this_program(visual: bool)** // updating UsableFunctions visual/not visual
 - **create_new_file(filename: str, content: str="", filepath: str=".")** // updated version of write_in_new_file
 - **read_file_content(filepath: str) -> str** // reads file
 - **is_pressed(key) -> bool** // key - pygame. **...**
 - **install_package(package: str)** // pip install **...**
 - **uninstall_package(package: str)** // pip uninstall **...**
 - **install_package_git(GitHub_full_https: str, package_name: str = "UsableFunctions", creator_name: str = "Artemon0")** // pip install **git+...**
-
 
 # About Me
 
