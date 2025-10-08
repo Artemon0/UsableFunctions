@@ -433,11 +433,9 @@ class UsableFunctions:
     def update_this_program_visual():
         try:
             with tqdm(total=100, desc="Updating", ncols=60, smoothing=True) as pbar:
-                # Начальный прогресс
                 pbar.update(20)
 
                 try:
-                    # Запуск обновления
                     result = subprocess.run(
                         [
                             sys.executable,
@@ -451,14 +449,17 @@ class UsableFunctions:
                         check=False,
                     )
 
-                    # Имитация прогресса установки
                     for _ in range(60):
                         time.sleep(0.02)
                         pbar.update(1)
 
-                    # Финальное обновление и проверка результата
                     if result.returncode == 0:
                         pbar.update(20)
+
+                        subprocess.run(
+                            [sys.executable, "-m", "pip", "show", "UsableFunctions"],
+                            check=True,
+                        )
                         return "Update successful"
                     else:
                         pbar.update(20)
