@@ -15,13 +15,13 @@ from random import randint
 import PyInstaller.__main__
 from tqdm import tqdm
 
-__version__ = "1.5.0"
+__version__ = "1.5.2"
 __author__ = "Artem Onyshchenko"
 __email__ = "artemon888.com@gmail.com"
 __license__ = "MIT"
 __url__ = "https://github.com/Artemon0/UsableFunctions.git"
 __download_url__ = (
-    "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.5.0.tar.gz"
+    "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.5.2.tar.gz"
 )
 
 
