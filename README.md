@@ -49,6 +49,7 @@ print(u.calculator(5, 7, '+')) # print(5 + 7); return 5 + 7
 - **install_package(package: str)** // pip install **...**
 - **uninstall_package(package: str)** // pip uninstall **...**
 - **install_package_git(GitHub_full_https: str, package_name: str = "UsableFunctions", creator_name: str = "Artemon0")** // pip install **git+...**
+- **Update_this_program_visual()** // updates UF with tqdm
 
 # About Me
 
