@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import time
+import math
 from random import randint
 
 import PyInstaller.__main__
@@ -270,17 +271,12 @@ class UsableFunctions:
     def factorial(n: int) -> str | int:
         if n < 0:
             return "Undefined for negative numbers"
-        elif n == 0 or n == 1:
+        elif n <= 1:
             return 1
         else:
-            result = 1
-            for i in range(2, n + 1):
-                result *= i
-            return result
+            return n * UsableFunctions.factorial(n - 1)
 
     def math_factorial(n: int) -> int:
-        import math
-
         return math.factorial(n)
 
     def while_calculator():
@@ -406,7 +402,14 @@ class UsableFunctions:
             pbar.update(20)
             try:
                 subprocess.check_call(
-                    [sys.executable, "-m", "pip", "install", f"git+{full_git_url}"],
+                    [
+                        sys.executable,
+                        "-m",
+                        "pip",
+                        "install",
+                        "--upgrade",
+                        f"git+{full_git_url}",
+                    ],
                     stdout=False,
                     stderr=False,
                 )
