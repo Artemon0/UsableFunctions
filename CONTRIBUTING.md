@@ -1,4 +1,4 @@
-# Правила участия
+# Contributing rules
 
 1. Create fork.
 2. Create new branch: `git checkout -b feature/my-feature`.
