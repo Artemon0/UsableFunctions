@@ -474,3 +474,13 @@ class UsableFunctions:
 
         except Exception as e:
             return f"Update failed: {str(e)}"
+
+    @staticmethod
+    def run_py_file(filepath: str = ""):
+        try:
+            subprocess.run([sys.executable, filepath], check=True)
+            return "Success"
+        except subprocess.CalledProcessError as e:
+            return f"Error: {e}"
+        except Exception as e:
+            return f"Error: {e}"
