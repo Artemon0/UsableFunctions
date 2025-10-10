@@ -484,3 +484,13 @@ class UsableFunctions:
             return f"Error: {e}"
         except Exception as e:
             return f"Error: {e}"
+
+    @staticmethod
+    def run_py_file_with_args(filepath: str = "", args: list = []):
+        try:
+            subprocess.run([sys.executable, filepath, *args], check=True)
+            return "Success"
+        except subprocess.CalledProcessError as e:
+            return f"Error: {e}"
+        except Exception as e:
+            return f"Error: {e}"
