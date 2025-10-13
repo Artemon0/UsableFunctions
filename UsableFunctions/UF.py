@@ -494,3 +494,10 @@ class UsableFunctions:
             return f"Error: {e}"
         except Exception as e:
             return f"Error: {e}"
+    
+    def run_python_code(sefl, code: str):
+        try:
+            exec(code)
+            return "Code executed successfully"
+        except Exception as e:
+            return f"Error executing code: {e}"
