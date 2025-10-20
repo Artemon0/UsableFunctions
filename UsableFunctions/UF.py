@@ -4,13 +4,13 @@ printing a single word, performing calculations, running a quest game, greeting 
 Python files to executables, determining even or odd numbers, and playing a number guessing game.
 """
 
+import math
 import os
 import random
 import shutil
 import subprocess
 import sys
 import time
-import math
 from random import randint
 
 import PyInstaller.__main__
@@ -51,7 +51,7 @@ class UsableFunctions:
             except ZeroDivisionError:
                 return ZeroDivisionError
         elif op == "**":
-            return a**b
+            return a ** b
 
         return "Invalid operator"
 
@@ -347,7 +347,8 @@ class UsableFunctions:
 
     # ! example: key = pygame.K_a
     def is_pressed(key) -> bool:
-        import pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
+        import \
+            pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
 
         pygame.init()
         pygame.display.set_mode((100, 100))
@@ -392,9 +393,9 @@ class UsableFunctions:
 
     @staticmethod
     def install_package_git(
-        full_git_url: str = "",
-        creator_name: str = "Artemon0",
-        repo_name: str = "UsableFunctions",
+            full_git_url: str = "",
+            creator_name: str = "Artemon0",
+            repo_name: str = "UsableFunctions",
     ) -> dict:
         with tqdm(total=100, desc="Installing", ncols=60) as pbar:
             if not full_git_url:
@@ -501,3 +502,20 @@ class UsableFunctions:
             return "Code executed successfully"
         except Exception as e:
             return f"Error executing code: {e}"
+
+    @staticmethod
+    def tocken(tocken: str,
+               valid_tocken: str = "22kc6MhrlSrzpJSbLcSzggFFOYoitIjWreePqqv7U1igIiAZ1PmlxHCgS5v4") -> dict:
+        def is_tocken_valid(self) -> bool:
+            if tocken == valid_tocken:
+                return True
+            return False
+
+        def get_tocken(self):
+            return tocken
+
+        return {
+            "valid": is_tocken_valid(None),
+            "tocken": get_tocken(None)
+        }
+    
