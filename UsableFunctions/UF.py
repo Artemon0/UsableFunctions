@@ -518,4 +518,4 @@ class UsableFunctions:
             "valid": is_tocken_valid(None),
             "tocken": get_tocken(None)
         }
-    
+
