@@ -515,7 +515,28 @@ class UsableFunctions:
             return tocken
 
         return {
-            "valid": is_tocken_valid(None),
-            "tocken": get_tocken(None)
+            "valid": is_tocken_valid(),
+            "tocken": get_tocken()
         }
 
+    @staticmethod
+    def users(users: list[dict["name": str, "password": str, "id": int]], user: dict[str: str | int]) -> dict[
+        str: bool | int]:
+        if user in users:
+            res = {"success": True} | user
+            return res
+        else:
+            return {"success": False}
+
+    def register(users: list[dict["name": str, "password": str, "id": int]],
+                 new_user: dict["name": str, "password": str, "id": int]) -> dict:
+        a = [i for i in users]
+        r = []
+        for q in a:
+            d = q['id']
+            r.append(d)
+
+        if new_user['id'] in r:
+            new_user['id'] += 1
+        users.append(new_user)
+        return users
