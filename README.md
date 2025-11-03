@@ -52,7 +52,10 @@ print(u.calculator(5, 7, '+')) # print(5 + 7); return 5 + 7
 - **Update_this_program_visual()** // updates UF with tqdm
 - **run_py_file(filepath: str)** // runnes py file
 - **run_py_file_with_args(filepath: str, args: list = []**)
-- **run_python_code(code: str**) // runnes py code
+- **run_python_code(code: str)** // runnes py code
+- **token(token: str, valid_token: str) -> dict** // token and valid token
+- **users(users: list(dict), user(dict)) -> dict** // is user un users
+- **register(users: list(dict()), user: dict) -> dict{new_users}**
 
 # About Me
 

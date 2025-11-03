@@ -504,19 +504,19 @@ class UsableFunctions:
             return f"Error executing code: {e}"
 
     @staticmethod
-    def tocken(tocken: str,
-               valid_tocken: str = "22kc6MhrlSrzpJSbLcSzggFFOYoitIjWreePqqv7U1igIiAZ1PmlxHCgS5v4") -> dict:
-        def is_tocken_valid(self) -> bool:
-            if tocken == valid_tocken:
+    def token(token: str,
+               valid_token: str = "22kc6MhrlSrzpJSbLcSzggFFOYoitIjWreePqqv7U1igIiAZ1PmlxHCgS5v4") -> dict:
+        def is_token_valid(self) -> bool:
+            if token == valid_token:
                 return True
             return False
 
-        def get_tocken(self):
-            return tocken
+        def get_token(self):
+            return token
 
         return {
-            "valid": is_tocken_valid(),
-            "tocken": get_tocken()
+            "valid": is_token_valid(),
+            "tocken": get_token()
         }
 
     @staticmethod
