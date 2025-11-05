@@ -519,7 +519,7 @@ class UsableFunctions:
 
     @staticmethod
     def users(
-        users: list[dict["name":str, "password":str, "id":int]],
+        users: list[dict["name":str, "password":str, "id":int]],  # noqa: F821
         user: dict[str : str | int],
     ) -> dict[str : bool | int]:
         if user in users:
@@ -529,8 +529,8 @@ class UsableFunctions:
             return {"success": False}
 
     def register(
-        users: list[dict["name":str, "password":str, "id":int]],
-        new_user: dict["name":str, "password":str, "id":int],
+        users: list[dict["name":str, "password":str, "id":int]],  # noqa: F821
+        new_user: dict["name":str, "password":str, "id":int],  # noqa: F821
     ) -> dict:
         a = [i for i in users]
         r = []
@@ -542,3 +542,20 @@ class UsableFunctions:
             new_user["id"] += 1
         users.append(new_user)
         return users
+
+    def check_password(
+        username: str,
+        password: str,
+        correct_username: str,
+        correct_password: str,
+        password_long: int = 0,
+    ) -> bool:
+        if len(password) < password_long and password_long != 0:
+            print(f"Password may by > {password_long} char long!")
+        try:
+            if correct_username == username and correct_password == password:
+                return True
+            else:
+                return False
+        except Exception as e:
+            print(f"Error: {e}")
