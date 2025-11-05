@@ -51,7 +51,7 @@ class UsableFunctions:
             except ZeroDivisionError:
                 return ZeroDivisionError
         elif op == "**":
-            return a ** b
+            return a**b
 
         return "Invalid operator"
 
@@ -347,8 +347,7 @@ class UsableFunctions:
 
     # ! example: key = pygame.K_a
     def is_pressed(key) -> bool:
-        import \
-            pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
+        import pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
 
         pygame.init()
         pygame.display.set_mode((100, 100))
@@ -393,9 +392,9 @@ class UsableFunctions:
 
     @staticmethod
     def install_package_git(
-            full_git_url: str = "",
-            creator_name: str = "Artemon0",
-            repo_name: str = "UsableFunctions",
+        full_git_url: str = "",
+        creator_name: str = "Artemon0",
+        repo_name: str = "UsableFunctions",
     ) -> dict:
         with tqdm(total=100, desc="Installing", ncols=60) as pbar:
             if not full_git_url:
@@ -504,8 +503,10 @@ class UsableFunctions:
             return f"Error executing code: {e}"
 
     @staticmethod
-    def token(token: str,
-               valid_token: str = "22kc6MhrlSrzpJSbLcSzggFFOYoitIjWreePqqv7U1igIiAZ1PmlxHCgS5v4") -> dict:
+    def token(
+        token: str,
+        valid_token: str = "22kc6MhrlSrzpJSbLcSzggFFOYoitIjWreePqqv7U1igIiAZ1PmlxHCgS5v4",
+    ) -> dict:
         def is_token_valid(self) -> bool:
             if token == valid_token:
                 return True
@@ -514,29 +515,30 @@ class UsableFunctions:
         def get_token(self):
             return token
 
-        return {
-            "valid": is_token_valid(),
-            "tocken": get_token()
-        }
+        return {"valid": is_token_valid(), "tocken": get_token()}
 
     @staticmethod
-    def users(users: list[dict["name": str, "password": str, "id": int]], user: dict[str: str | int]) -> dict[
-        str: bool | int]:
+    def users(
+        users: list[dict["name":str, "password":str, "id":int]],
+        user: dict[str : str | int],
+    ) -> dict[str : bool | int]:
         if user in users:
             res = {"success": True} | user
             return res
         else:
             return {"success": False}
 
-    def register(users: list[dict["name": str, "password": str, "id": int]],
-                 new_user: dict["name": str, "password": str, "id": int]) -> dict:
+    def register(
+        users: list[dict["name":str, "password":str, "id":int]],
+        new_user: dict["name":str, "password":str, "id":int],
+    ) -> dict:
         a = [i for i in users]
         r = []
         for q in a:
-            d = q['id']
+            d = q["id"]
             r.append(d)
 
-        if new_user['id'] in r:
-            new_user['id'] += 1
+        if new_user["id"] in r:
+            new_user["id"] += 1
         users.append(new_user)
         return users
