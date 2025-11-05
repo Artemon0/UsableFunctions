@@ -56,6 +56,7 @@ print(u.calculator(5, 7, '+')) # print(5 + 7); return 5 + 7
 - **token(token: str, valid_token: str) -> dict** // token and valid token
 - **users(users: list(dict), user(dict)) -> dict** // is user un users
 - **register(users: list(dict()), user: dict) -> dict{new_users}**
+- **check_password(username: str, password: str, correct_username: str,correct_password: str, password_long: int = 0) -> bool:** // returns is your password valid :)
 
 # About Me
 
