@@ -16,3 +16,4 @@ UFuse.py
 .idea
 .zencoder
 build
+test.py

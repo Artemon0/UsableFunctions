@@ -27,6 +27,10 @@ __download_url__ = (
 
 
 class UsableFunctions:
+
+    def __init__(self):
+        pass
+
     # ! Prints only one word !
     def print_one(self) -> None:
         print(self)
