@@ -24,6 +24,77 @@
 				--text-color: #333;
 				--code-bg: #2d2d2d;
 				--code-color: #e6e6e6;
+				--card-bg: white;
+				--transition-time: 0.3s;
+			}
+
+			[data-theme='dark'] {
+				--primary-color: #64b5f6;
+				--secondary-color: #90caf9;
+				--background-color: #1a1a1a;
+				--text-color: #ffffff;
+				--code-bg: #2d2d2d;
+				--code-color: #e6e6e6;
+				--card-bg: #2d2d2d;
+				--dim-text: #a0a0a0;
+			}
+
+			.theme-switch-wrapper {
+				position: fixed;
+				top: 20px;
+				right: 20px;
+				display: flex;
+				align-items: center;
+				z-index: 100;
+				background: var(--card-bg);
+				padding: 10px 15px;
+				border-radius: 30px;
+				box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+			}
+
+			.theme-switch {
+				display: inline-block;
+				width: 60px;
+				height: 34px;
+				position: relative;
+			}
+
+			.theme-switch input {
+				opacity: 0;
+				width: 0;
+				height: 0;
+			}
+
+			.slider {
+				position: absolute;
+				cursor: pointer;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: #ccc;
+				transition: 0.4s;
+				border-radius: 34px;
+			}
+
+			.slider:before {
+				position: absolute;
+				content: '';
+				height: 26px;
+				width: 26px;
+				left: 4px;
+				bottom: 4px;
+				background-color: white;
+				transition: 0.4s;
+				border-radius: 50%;
+			}
+
+			input:checked + .slider {
+				background-color: var(--primary-color);
+			}
+
+			input:checked + .slider:before {
+				transform: translateX(26px);
 			}
 
 			* {
@@ -39,6 +110,8 @@
 				background-color: var(--background-color);
 				padding: 0;
 				margin: 0;
+				transition: color var(--transition-time),
+					background-color var(--transition-time);
 			}
 
 			.container {
@@ -71,15 +144,22 @@
 			h2 {
 				font-size: 2rem;
 				margin: 2rem 0 1rem;
-				color: var(--secondary-color);
+				color: var(--text-color);
 				border-bottom: 2px solid var(--primary-color);
 				padding-bottom: 0.5rem;
+				transition: color var(--transition-time);
+			}
+
+			h3 {
+				color: var(--text-color);
+				transition: color var(--transition-time);
 			}
 
 			p {
 				margin-bottom: 1.5rem;
 				font-size: 1.1rem;
-				color: #555;
+				color: var(--text-color);
+				transition: color var(--transition-time);
 			}
 
 			.btn {
@@ -115,6 +195,7 @@
 				overflow-x: auto;
 				margin: 1.5rem 0;
 				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+				border: 1px solid rgba(255, 255, 255, 0.1);
 			}
 
 			code {
@@ -133,16 +214,23 @@
 			}
 
 			li {
-				background: white;
+				background: var(--card-bg);
 				padding: 1rem;
 				border-radius: 8px;
 				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-				transition: transform 0.3s ease;
+				transition: transform 0.3s ease, background-color var(--transition-time),
+					color var(--transition-time);
+				color: var(--text-color);
 			}
 
 			li:hover {
 				transform: translateY(-2px);
 				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+
+			li p,
+			li strong {
+				color: var(--text-color);
 			}
 
 			a {
@@ -156,11 +244,12 @@
 			}
 
 			.installation {
-				background: white;
+				background: var(--card-bg);
 				padding: 2rem;
 				border-radius: 10px;
 				margin: 2rem 0;
 				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+				transition: background-color var(--transition-time);
 			}
 
 			.about-me {
@@ -175,13 +264,14 @@
 			}
 
 			.profile-card {
-				background: white;
+				background: var(--card-bg);
 				border-radius: 16px;
 				box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 				overflow: hidden;
 				max-width: 800px;
 				width: 100%;
-				transition: transform 0.3s ease, box-shadow 0.3s ease;
+				transition: transform 0.3s ease, box-shadow 0.3s ease,
+					background-color var(--transition-time);
 			}
 
 			.profile-card:hover {
@@ -213,6 +303,8 @@
 			.profile-header h3 {
 				font-size: 1.8rem;
 				margin: 0.5rem 0;
+				color: var(--text-color);
+				transition: color var(--transition-time);
 			}
 
 			.title {
@@ -228,9 +320,10 @@
 			.bio {
 				font-size: 1.1rem;
 				line-height: 1.6;
-				color: #555;
+				color: var(--text-color);
 				margin-bottom: 2rem;
 				text-align: center;
+				transition: color var(--transition-time);
 			}
 
 			.stats {
@@ -253,9 +346,10 @@
 
 			.stat-label {
 				font-size: 0.9rem;
-				color: #666;
+				color: var(--dim-text);
 				margin-top: 0.25rem;
 				display: block;
+				transition: color var(--transition-time);
 			}
 
 			.contact-links {
@@ -337,6 +431,12 @@
 		</style>
 	</head>
 	<body>
+		<div class="theme-switch-wrapper">
+			<label class="theme-switch" for="checkbox">
+				<input type="checkbox" id="checkbox" />
+				<div class="slider"></div>
+			</label>
+		</div>
 		<header>
 			<div class="container">
 				<h1>UsableFunctions</h1>
@@ -624,6 +724,30 @@ u.py_to_exe('your_script.py')</code></pre>
 					})
 				})
 			})
+
+			const toggleSwitch = document.querySelector(
+				'.theme-switch input[type="checkbox"]'
+			)
+			const currentTheme = localStorage.getItem('theme')
+
+			if (currentTheme) {
+				document.documentElement.setAttribute('data-theme', currentTheme)
+				if (currentTheme === 'dark') {
+					toggleSwitch.checked = true
+				}
+			}
+
+			function switchTheme(e) {
+				if (e.target.checked) {
+					document.documentElement.setAttribute('data-theme', 'dark')
+					localStorage.setItem('theme', 'dark')
+				} else {
+					document.documentElement.setAttribute('data-theme', 'light')
+					localStorage.setItem('theme', 'light')
+				}
+			}
+
+			toggleSwitch.addEventListener('change', switchTheme, false)
 		</script>
 	</body>
 </html>
