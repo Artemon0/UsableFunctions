@@ -16,13 +16,13 @@ from random import randint
 import PyInstaller.__main__
 from tqdm import tqdm
 
-__version__ = "1.5.4"
+__version__ = "1.6.0"
 __author__ = "Artem Onyshchenko"
 __email__ = "artemon888.com@gmail.com"
 __license__ = "GPL v3.0"
 __url__ = "https://github.com/Artemon0/UsableFunctions.git"
 __download_url__ = (
-    "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.5.4.tar.gz"
+    "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.6.0.tar.gz"
 )
 
 
@@ -563,3 +563,26 @@ class UsableFunctions:
                 return False
         except Exception as e:
             print(f"Error: {e}")
+
+    class Circle:
+        def __init__(self, radius: float = 0, T: float = 0, N: float = 0, t: float = 0):
+            self.radius = radius
+            self.T = T
+
+        def calculate_v(self, radius, T):
+            pi = math.pi
+            res = 2 * (pi * radius)
+            return res
+            del res
+
+        def calculate_T(self, t: float = 0, N: float = 0, n: float = 0):
+            if n != 0:
+                return 1 / n
+            else:
+                return t / N
+
+        def calculate_n(self, N: float, t: float):
+            return N / t
+
+        def calculate_N(self, n: float, t: float):
+            return n * t

@@ -17,3 +17,6 @@ UFuse.py
 .zencoder
 build
 test.py
+*.zip
+.zip
+build.zip
