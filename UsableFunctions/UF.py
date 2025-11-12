@@ -568,6 +568,8 @@ class UsableFunctions:
         def __init__(self, radius: float = 0, T: float = 0, N: float = 0, t: float = 0):
             self.radius = radius
             self.T = T
+            self.N = N
+            self.t = t
 
         def calculate_v(self, radius, T):
             pi = math.pi
