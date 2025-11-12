@@ -10,7 +10,6 @@
     />
     <link rel="icon" href="imgs/binary-code.png" type="image/png">
     <script>
-        // Применяем сохраненную тему сразу при загрузке
         const savedTheme = localStorage.getItem('theme')
         if (savedTheme) {
             document.documentElement.setAttribute('data-theme', savedTheme)
@@ -743,6 +742,7 @@ u.py_to_exe('your_script.py')</code></pre>
                         >
                             <i class="fab fa-telegram"></i> Telegram Channel
                         </a>
+                        <a href="https://artemon0.github.io/My-Main-Site/" class="contact-button">Site</a>
                     </div>
                 </div>
             </div>
@@ -764,18 +764,18 @@ u.py_to_exe('your_script.py')</code></pre>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script>
-    // Функция инициализации темы
+
     function initializeTheme() {
         const themeSwitch = document.getElementById('themeSwitch')
 
-        // Проверяем сохраненную тему
+
         const savedTheme = localStorage.getItem('theme')
         if (savedTheme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark')
             themeSwitch.checked = true
         }
 
-        // Обработчик переключения темы
+
         themeSwitch.addEventListener('change', function (e) {
             if (e.target.checked) {
                 document.documentElement.setAttribute('data-theme', 'dark')
@@ -787,7 +787,7 @@ u.py_to_exe('your_script.py')</code></pre>
         })
     }
 
-    // Инициализация плавной прокрутки
+
     function initializeSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -800,12 +800,12 @@ u.py_to_exe('your_script.py')</code></pre>
         })
     }
 
-    // Инициализация переключателя языка
+
     function initializeLanguage() {
         const langSwitch = document.getElementById('langSwitch')
         const langText = document.querySelector('.lang-text')
 
-        // Проверяем сохраненный язык
+
         const savedLang = localStorage.getItem('language') || 'en'
         if (savedLang === 'ru') {
             langSwitch.checked = true
@@ -814,7 +814,7 @@ u.py_to_exe('your_script.py')</code></pre>
             translateToRussian()
         }
 
-        // Обработчик переключения языка
+
         langSwitch.addEventListener('change', function (e) {
             if (e.target.checked) {
                 langText.textContent = 'RU'
@@ -830,7 +830,7 @@ u.py_to_exe('your_script.py')</code></pre>
         })
     }
 
-    // Функция перевода на русский
+
     function translateToRussian() {
         const translations = {
             // Общие переводы
