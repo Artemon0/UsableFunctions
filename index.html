@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>UsableFunctions - Python Utility Library</title>
     <link
-            rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
     />
-    <link rel="icon" href="imgs/binary-code.png" type="image/png">
+    <link href="imgs/binary-code.png" rel="icon" type="image/png">
     <script>
         const savedTheme = localStorage.getItem('theme')
         if (savedTheme) {
@@ -16,12 +16,12 @@
         }
     </script>
     <link
-            rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+            rel="stylesheet"
     />
     <link
-            rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css"
+            rel="stylesheet"
     />
     <style>
         :root {
@@ -466,7 +466,7 @@
 <div class="switches-wrapper">
     <div class="switch-container">
         <label class="theme-switch" for="themeSwitch">
-            <input type="checkbox" id="themeSwitch"/>
+            <input id="themeSwitch" type="checkbox"/>
             <div class="slider">
                 <i class="fas fa-sun" style="color: #ffd700; margin-left: 6px"></i>
                 <i
@@ -478,7 +478,7 @@
     </div>
     <div class="switch-container">
         <label class="lang-switch" for="langSwitch">
-            <input type="checkbox" id="langSwitch" style="display: none"/>
+            <input id="langSwitch" style="display: none" type="checkbox"/>
             <i class="fas fa-language"></i>
             <span class="lang-text">EN</span>
         </label>
@@ -488,10 +488,10 @@
     <div class="container">
         <h1>UsableFunctions</h1>
         <p>A powerful Python utility library for everyday tasks</p>
-        <a href="https://github.com/Artemon0/UsableFunctions" class="btn"
+        <a class="btn" href="https://github.com/Artemon0/UsableFunctions"
         >View on GitHub</a
         >
-        <a href="#installation" class="btn">Get Started</a>
+        <a class="btn" href="#installation">Get Started</a>
     </div>
 </header>
 
@@ -503,8 +503,8 @@
         <div class="installation-method">
             <h3>From ZIP</h3>
             <a
-                    href="https://github.com/Artemon0/UsableFunctions/archive/refs/heads/main.zip"
                     class="btn download-btn"
+                    href="https://github.com/Artemon0/UsableFunctions/archive/refs/heads/main.zip"
             >
                 <i class="fas fa-download"></i> Download ZIP
             </a>
@@ -699,9 +699,9 @@ u.py_to_exe('your_script.py')</code></pre>
             <div class="profile-card">
                 <div class="profile-header">
                     <img
-                            src="https://avatars.githubusercontent.com/u/119106910?v=4"
                             alt="Artem Onyshchenko"
                             class="profile-image"
+                            src="https://avatars.githubusercontent.com/u/119106910?v=4"
                     />
                     <h3>Artem Onyshchenko</h3>
                     <p class="title">Python Developer</p>
@@ -724,26 +724,27 @@ u.py_to_exe('your_script.py')</code></pre>
                     </div>
                     <div class="contact-links">
                         <a
-                                href="mailto:artemon888.com@gmail.com"
                                 class="contact-button email"
+                                href="mailto:artemon888.com@gmail.com"
                         >
                             <i class="far fa-envelope"></i> Email Me
                         </a>
                         <a
-                                href="https://github.com/Artemon0"
                                 class="contact-button github"
+                                href="https://github.com/Artemon0"
                         >
                             <i class="fab fa-github"></i> GitHub Profile
                         </a>
                         <a
-                                href="https://t.me/AOGames888"
                                 class="contact-button telegram"
+                                href="https://t.me/AOGames888"
                                 target="_blank"
                         >
                             <i class="fab fa-telegram"></i> Telegram Channel
                         </a>
-                        <a onclick="window.open('https://artemon0.github.io/My-Main-Site/', '_blank')"
-                           class="contact-button" style="cursor: pointer">Site</a>
+                        <a class="contact-button"
+                           onclick="window.open('https://artemon0.github.io/My-Main-Site/', '_blank')"
+                           style="cursor: pointer">Site</a>
                     </div>
                 </div>
             </div>
@@ -834,7 +835,7 @@ u.py_to_exe('your_script.py')</code></pre>
 
     function translateToRussian() {
         const translations = {
-            // Общие переводы
+
             UsableFunctions: 'UsableFunctions',
             'A powerful Python utility library for everyday tasks':
                 'Мощная библиотека Python для повседневных задач',
@@ -933,16 +934,16 @@ u.py_to_exe('your_script.py')</code></pre>
                 'Класс для расчетов кругового движения (скорость, период, частота)',
         }
 
-        // Обновляем текст на странице
+
         document
             .querySelectorAll('*:not(script):not(style)')
             .forEach(element => {
-                // Пропускаем перевод названий функций в strong тегах
+
                 if (element.tagName === 'STRONG') {
                     return
                 }
 
-                // Для p тегов (описания функций) и текстовых узлов
+
                 if (
                     element.tagName === 'P' ||
                     (element.childNodes.length === 1 &&
@@ -954,7 +955,7 @@ u.py_to_exe('your_script.py')</code></pre>
                     }
                 }
 
-                // Для title атрибутов
+
                 if (element.title) {
                     const text = element.textContent.trim()
                     if (translations[text]) {
@@ -962,7 +963,7 @@ u.py_to_exe('your_script.py')</code></pre>
                     }
                 }
 
-                // Если есть title, проверяем его
+
                 if (element.title) {
                     const text = element.title.trim()
                     if (translations[text]) {
@@ -974,7 +975,7 @@ u.py_to_exe('your_script.py')</code></pre>
 
     // Функция возврата к английскому
     function translateToEnglish() {
-        window.location.reload() // Простой способ вернуть английский текст
+        window.location.reload()
     }
 
     // Запускаем инициализацию после загрузки DOM
