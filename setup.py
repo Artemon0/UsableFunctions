@@ -1,15 +1,11 @@
-from setuptools import setup, find_namespace_packages
+"""
+Setup configuration for UsableFunctions package.
 
-setup(
-    name="UsableFunctions",
-    version="1.6.0",
-    description="Very useful functions",
-    url="https://github.com/Artemon0/UsableFunctions.git",
-    download_url='https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.6.0.tar.gz',
-    author="Artem Onyshchenko",
-    author_email="artemon888.com@gmail.com",
-    license="GPL v3.0",
-    packages=find_namespace_packages(),
-    install_requires=["tqdm", "PyInstaller", "pygame"],
-    # entry_points={"console_scripts": ["quest = UsableFunctions.UF:quest"]},
-)
+This file is kept for backward compatibility.
+All configuration is now in pyproject.toml (PEP 621).
+"""
+
+from setuptools import setup
+
+# All configuration is in pyproject.toml
+setup()

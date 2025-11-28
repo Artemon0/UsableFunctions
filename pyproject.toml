@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "UsableFunctions"
+version = "1.6.0"
+description = "A collection of utility functions for common programming tasks"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-or-later"
+authors = [
+    {name = "Artem Onyshchenko", email = "artemon888.com@gmail.com"}
+]
+keywords = ["utilities", "tools", "helpers", "functions"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "tqdm>=4.65.0",
+    "PyInstaller>=5.0.0",
+    "pygame>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Artemon0/UsableFunctions"
+Documentation = "https://artemon0.github.io/UsableFunctions/"
+Repository = "https://github.com/Artemon0/UsableFunctions"
+"Bug Reports" = "https://github.com/Artemon0/UsableFunctions/issues"
+
+[tool.setuptools]
+packages = ["UsableFunctions"]
+
+[tool.setuptools.package-data]
+UsableFunctions = ["*.py"]

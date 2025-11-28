@@ -1,23 +1,106 @@
-.vscode
+# ===== IDE & Editors =====
+.vscode/
+.idea/
+.vs/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ===== Virtual Environments =====
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ===== Distribution / Packaging =====
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ===== PyInstaller =====
+*.manifest
+*.spec
+
+# ===== Unit test / coverage =====
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.pytest_cache/
+.hypothesis/
+
+# ===== Jupyter Notebook =====
+.ipynb_checkpoints
+
+# ===== pyenv =====
+.python-version
+
+# ===== Environments =====
+.env
+.env.local
 .venv
-__pycache__
-UF.exe
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ===== mypy =====
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ===== Pyre type checker =====
+.pyre/
+
+# ===== pytype static type analyzer =====
+.pytype/
+
+# ===== Cython debug symbols =====
+cython_debug/
+
+# ===== Build artifacts =====
+*.exe
+*.zip
+*.tar.gz
+*.rar
+
+# ===== Project specific =====
 UFuse.py
 index.md
+index.html
 functions.txt
-UsableFunctions.egg-info
-UFuse.py
-UFuse.py
---- a/file:///d%3A/Python/MY/UsableFunctions/UFuse.py
---- b/file:///d%3A/Python/MY/UsableFunctions/UFuse.py
-+++ b/file:///d%3A/Python/MY/UsableFunctions/UFuse.py
-@@ -1,3 +1,4 @@
-./UFuse.py
-.idea
-.zencoder
-build
 test.py
-*.zip
-.zip
-build.zip
-.vs
+.zencoder/
+
+# ===== Temporary files =====
+*.tmp
+*.bak
+*.orig

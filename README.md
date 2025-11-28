@@ -1,29 +1,57 @@
 # Usable Functions
 
-**If you downloaded .zip**
+A collection of utility functions for common programming tasks in Python.
 
-```bash
-pip install -r requirements.txt
-```
+## Installation
 
-## To install as a package:
-
-**Nothing required**
+### From GitHub (recommended)
 
 ```bash
 pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git
 ```
 
-## Example usage:
+### From source
+
+```bash
+git clone https://github.com/Artemon0/UsableFunctions.git
+cd UsableFunctions
+pip install -e .
+```
+
+### Development setup
+
+```bash
+pip install -r requirements.txt
+python build.py all
+```
+
+## Quick Start
 
 ```python
 from UsableFunctions.UF import UsableFunctions as u
-print(u.calculator(5, 7, '+')) # print(5 + 7); return 5 + 7
+
+# Calculator
+result = u.calculator(5, 7, '+')  # Returns: 12
+
+# Generate random password
+password = u.get_random_password(12)
+
+# Check if number is even or odd
+print(u.even_odd(42))  # Returns: "Even"
+
+# Play a quest game
+u.quest("Player1", difficulty=2)
 ```
 
-## [Site](https://artemon0.github.io/UsableFunctions/)
+## 📚 Documentation
 
-# Functions:
+Visit our [documentation website](https://artemon0.github.io/UsableFunctions/) for:
+- Interactive examples
+- Complete API reference
+- Dark/Light theme support
+- Multi-language support (EN/RU)
+
+## 🚀 Functions:
 
 - **calculator(\***a, b, operator**\*)**
 - **quest(\***player, difficulty(1-3)**\*)**
@@ -58,6 +86,9 @@ print(u.calculator(5, 7, '+')) # print(5 + 7); return 5 + 7
 - **register(users: list(dict()), user: dict) -> dict{new_users}**
 - **check_password(username: str, password: str, correct_username: str,correct_password: str, password_long: int = 0) -> bool:** // returns is your password valid :)
 
-# About Me
+# 👨‍💻 About Me
 
-I am Artem. If you want to help me, contact to the _Telegram:_ **@Artemon0000([t.me](https://t.me/Artemon0000)).** My Telegram channel: [Telegram](https://t.me/AOGames888)
+I am Artem, 12 y.o. Python developer.
+- **Telegram:** [@Artemon0000](https://t.me/Artemon0000)
+- **Channel:** [Telegram](https://t.me/AOGames888)
+- **GitHub:** [Artemon0](https://github.com/Artemon0)
