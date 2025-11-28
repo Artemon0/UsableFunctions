@@ -1,7 +1,13 @@
 """
-The `UsableFunctions` class in the provided Python code contains various functions for tasks like
-printing a single word, performing calculations, running a quest game, greeting users, converting
-Python files to executables, determining even or odd numbers, and playing a number guessing game.
+UsableFunctions - A collection of utility functions for common programming tasks.
+
+This module provides various utilities including:
+- Mathematical operations (calculator, factorial)
+- File operations (read, write, delete, move)
+- Game functions (quest, number guessing)
+- Python package management
+- File conversion (py to exe)
+- User authentication helpers
 """
 
 import math
@@ -11,7 +17,7 @@ import shutil
 import subprocess
 import sys
 import time
-from random import randint
+from typing import Dict, List, Union, Optional
 
 import PyInstaller.__main__
 from tqdm import tqdm
@@ -27,43 +33,61 @@ __download_url__ = (
 
 
 class UsableFunctions:
+    """A collection of utility functions for various programming tasks."""
 
     def __init__(self):
+        """Initialize UsableFunctions instance."""
         pass
 
-    # ! Prints only one word !
     def print_one(self) -> None:
+        """Print a single word or value."""
         print(self)
-        return None
 
-    # * Typical calculator
-    def calculator(a: float, b: float, op: str):
-        if op == "+":
-            return a + b
-        elif op == "-":
-            return a - b
-        elif op == "*":
-            return a * b
-        elif op == "/":
+    @staticmethod
+    def calculator(a: float, b: float, op: str) -> Union[float, str]:
+        """
+        Perform basic arithmetic operations.
+        
+        Args:
+            a: First operand
+            b: Second operand
+            op: Operator (+, -, *, /, %, **)
+            
+        Returns:
+            Result of the operation or error message
+        """
+        operations = {
+            "+": lambda x, y: x + y,
+            "-": lambda x, y: x - y,
+            "*": lambda x, y: x * y,
+            "**": lambda x, y: x ** y,
+        }
+        
+        if op in operations:
+            return operations[op](a, b)
+        elif op in ("/", "%"):
             try:
-                return a / b
+                return a / b if op == "/" else a % b
             except ZeroDivisionError:
-                return ZeroDivisionError
-        elif op == "%":
-            try:
-                return a % b
-            except ZeroDivisionError:
-                return ZeroDivisionError
-        elif op == "**":
-            return a**b
-
+                return "Error: Division by zero"
+        
         return "Invalid operator"
 
-    # * Quest with difficulty
-    # ! Difficulty is from 1 to 3 !
-    def quest(player: str = "Unnamed", difficulty: int = 1):
+    @staticmethod
+    def quest(player: str = "Unnamed", difficulty: int = 1) -> str:
+        """
+        Run a math quiz game with different difficulty levels.
+        
+        Args:
+            player: Player name
+            difficulty: Difficulty level (1-3)
+            
+        Returns:
+            Final score message
+        """
         score = 0
         print(f"{player}, welcome to the quest!")
+        
         if difficulty == 1:
             user_answer = input("2 + 2 = ")
             if user_answer == "4":
@@ -115,64 +139,64 @@ class UsableFunctions:
             return "Your score 0"
         return f"Quest completed, {player}! Your score is {score} points!"
 
-    # * Greeting functions
-    def say_hello(name: str):
+    @staticmethod
+    def say_hello(name: str) -> str:
+        """Return a greeting message."""
         return f"Hello, {name}!"
 
-    def say_goodbye(name: str):
+    @staticmethod
+    def say_goodbye(name: str) -> str:
+        """Return a goodbye message."""
         return f"Goodbye, {name}!"
 
     @staticmethod
-    # * Converts .py to .exe using PyInstaller
-    def py_to_exe(file: str = "main.py"):
-        try:
-            if os.path.exists(file):
-                pass
-        except Exception:
+    def py_to_exe(file: str = "main.py") -> str:
+        """
+        Convert Python file to executable using PyInstaller.
+        
+        Args:
+            file: Path to Python file
+            
+        Returns:
+            "Success" or "Failed"
+        """
+        if not os.path.exists(file):
             print(f"File {file} does not exist.")
             return "Failed"
-        time.sleep(1)
+        
         import warnings
-
         warnings.filterwarnings("ignore")
 
         try:
-            # * Создаем прогресс-бар
             with tqdm(total=100, desc="Converting", ncols=60) as pbar:
-                # * Подготовка
                 pbar.update(10)
-
-                # * Конвертация
+                
+                PyInstaller.__main__.run([
+                    file,
+                    "--onefile",
+                    "--clean",
+                    "--noconfirm",
+                ])
                 pbar.update(40)
-                PyInstaller.__main__.run(
-                    [
-                        file,
-                        "--onefile",
-                        # '--windowed',
-                        "--clean",
-                        "--noconfirm",
-                    ]
-                )
-
-                # * Очистка и финализация
-                pbar.update(40)
+                
                 exe_name = file.replace(".py", ".exe")
                 if os.path.exists(f"./dist/{exe_name}"):
                     shutil.move(f"./dist/{exe_name}", f"./{exe_name}")
-
-                # * Удаляем временные файлы
-                if os.path.exists("./build"):
-                    shutil.rmtree("./build")
-                if os.path.exists("./dist"):
-                    shutil.rmtree("./dist")
+                
+                # Clean up temporary files
+                for path in ["./build", "./dist"]:
+                    if os.path.exists(path):
+                        shutil.rmtree(path)
+                
                 spec_file = file.replace(".py", ".spec")
                 if os.path.exists(spec_file):
                     os.remove(spec_file)
-
-                pbar.update(10)
-                time.sleep(1)  # Плавность
+                
+                pbar.update(40)
+                
                 for _ in tqdm(range(10), desc="Cleaning", ncols=60):
                     time.sleep(0.2)
+                pbar.update(10)
 
             print(f"\n✅ Successfully created: {exe_name}")
             return "Success"
@@ -181,13 +205,19 @@ class UsableFunctions:
             print(f"\n❌ Error during conversion: {str(e)}")
             return "Failed"
 
-    def even_odd(number: int):
-        if number % 2 == 0:
-            return "Even"
-        else:
-            return "Odd"
+    @staticmethod
+    def even_odd(number: int) -> str:
+        """Check if a number is even or odd."""
+        return "Even" if number % 2 == 0 else "Odd"
 
-    def game():
+    @staticmethod
+    def game() -> str:
+        """
+        Play a number guessing game.
+        
+        Returns:
+            "Game Over" when finished
+        """
         number_to_guess = random.randint(1, 100)
         attempts = 0
         print("Welcome to the Number Guessing Game!")
@@ -198,160 +228,176 @@ class UsableFunctions:
             try:
                 guess = int(user_input)
                 attempts += 1
-                if guess < 1 or guess > 100:
+                
+                if not 1 <= guess <= 100:
                     print("Please guess a number within the range of 1 to 100.")
                     continue
+                    
+                if guess < number_to_guess:
+                    print("Too low.")
+                elif guess > number_to_guess:
+                    print("Too high.")
+                else:
+                    print(f"Congratulations! You've guessed the number {number_to_guess} in {attempts} attempts.")
+                    break
+                    
             except ValueError:
                 print("Invalid input. Please enter a number.")
-                continue
-
-            if guess < number_to_guess:
-                print("Too low.")
-            elif guess > number_to_guess:
-                print("Too high.")
-            else:
-                print(
-                    f"Congratulations! You've guessed the number {number_to_guess} in {attempts} attempts."
-                )
-                break
 
         return "Game Over"
 
-    # todo: Add more functions here
-    def write_in_new_file(filename: str, content: str):
+    @staticmethod
+    def write_in_new_file(filename: str, content: str) -> str:
+        """Write content to a new file."""
         try:
-            with open(filename, "w") as file:
+            with open(filename, "w", encoding="utf-8") as file:
                 file.write(content)
             return "Success"
         except Exception as e:
             return f"Error: {e}"
 
-    def read_from_file(filename: str):
+    @staticmethod
+    def read_from_file(filename: str) -> str:
+        """Read content from a file."""
         try:
-            with open(filename, "r") as file:
-                content = file.read()
-            return content
+            with open(filename, "r", encoding="utf-8") as file:
+                return file.read()
         except Exception as e:
             return f"Error: {e}"
 
-    def delete_file(filename: str):
+    @staticmethod
+    def delete_file(filename: str) -> str:
+        """Delete a file if it exists."""
         try:
             if os.path.exists(filename):
                 os.remove(filename)
                 return "File deleted successfully"
-            else:
-                return "File does not exist"
+            return "File does not exist"
         except Exception as e:
             return f"Error: {e}"
 
-    def rename_file(old_name: str, new_name: str):
+    @staticmethod
+    def rename_file(old_name: str, new_name: str) -> str:
+        """Rename a file."""
         try:
             if os.path.exists(old_name):
                 os.rename(old_name, new_name)
                 return "File renamed successfully"
-            else:
-                return "File does not exist"
+            return "File does not exist"
         except Exception as e:
             return f"Error: {e}"
 
-    def move_file(source: str, destination: str):
+    @staticmethod
+    def move_file(source: str, destination: str) -> str:
+        """Move a file to a new location."""
         try:
             if os.path.exists(source):
                 shutil.move(source, destination)
                 return "File moved successfully"
-            else:
-                return "File does not exist"
+            return "File does not exist"
         except Exception as e:
             return f"Error: {e}"
 
-    # TODO: More functions can be added here
+    @staticmethod
     def get_random_password(length: int = 8) -> str:
-        password = ""
-        for _ in range(length):  # Length of the password
-            char = chr(randint(33, 126))  # Printable ASCII characters
-            password += char
-        return password
+        """Generate a random password with printable ASCII characters."""
+        return "".join(chr(random.randint(33, 126)) for _ in range(length))
 
-    def factorial(n: int) -> str | int:
+    @staticmethod
+    def factorial(n: int) -> Union[str, int]:
+        """Calculate factorial recursively."""
         if n < 0:
             return "Undefined for negative numbers"
-        elif n <= 1:
+        if n <= 1:
             return 1
-        else:
-            return n * UsableFunctions.factorial(n - 1)
+        return n * UsableFunctions.factorial(n - 1)
 
+    @staticmethod
     def math_factorial(n: int) -> int:
+        """Calculate factorial using math library."""
         return math.factorial(n)
 
-    def while_calculator():
+    @staticmethod
+    def while_calculator() -> None:
+        """Run an interactive calculator in a loop."""
         print("Welcome to the While Calculator!")
         print("Type 'exit' to quit.")
+        
         while True:
-            a = input("Enter first number: ")
-            if a.lower() == "exit":
+            a_input = input("Enter first number: ")
+            if a_input.lower() == "exit":
                 break
-            op = input("Enter operator (+, -, *, /, %): ")
+                
+            op = input("Enter operator (+, -, *, /, %, **): ")
             if op.lower() == "exit":
                 break
-            b = input("Enter second number: ")
-            if b.lower() == "exit":
+                
+            b_input = input("Enter second number: ")
+            if b_input.lower() == "exit":
                 break
+                
             try:
-                a = float(a)
-                b = float(b)
+                a = float(a_input)
+                b = float(b_input)
                 result = UsableFunctions.calculator(a, b, op)
                 print(f"Result: {result}")
             except ValueError:
                 print("Invalid input. Please enter numeric values.")
 
     @staticmethod
-    def get_progress_bar(iterable, desc="Processing", ncols=60):
+    def get_progress_bar(iterable, desc: str = "Processing", ncols: int = 60):
+        """Create a progress bar for an iterable."""
         return tqdm(iterable, desc=desc, ncols=ncols)
 
     @staticmethod
-    def update_this_program():
+    def update_this_program() -> str:
+        """Update UsableFunctions package from GitHub."""
         try:
-            subprocess.run(
-                [
-                    sys.executable,
-                    "-m",
-                    "pip",
-                    "install",
-                    "--upgrade",
-                    "git+https://github.com/Artemon0/UsableFunctions.git",
-                ],
-                check=True,
-            )
+            subprocess.run([
+                sys.executable, "-m", "pip", "install", "--upgrade",
+                "git+https://github.com/Artemon0/UsableFunctions.git"
+            ], check=True)
 
-            subprocess.run(
-                [sys.executable, "-m", "pip", "show", "UsableFunctions"], check=True
-            )
+            subprocess.run([
+                sys.executable, "-m", "pip", "show", "UsableFunctions"
+            ], check=True)
+            
             return "Update successful"
-        except subprocess.CalledProcessError as e:
-            return f"Update failed: {e}"
-        except Exception as e:
+        except (subprocess.CalledProcessError, Exception) as e:
             return f"Update failed: {e}"
 
-    def create_new_file(filename: str, content: str = "", filepath: str = "."):
+    @staticmethod
+    def create_new_file(filename: str, content: str = "", filepath: str = ".") -> str:
+        """Create a new file with optional content."""
         try:
             full_path = os.path.join(filepath, filename)
-            with open(full_path, "w") as file:
+            with open(full_path, "w", encoding="utf-8") as file:
                 file.write(content)
             return "Success"
         except Exception as e:
             return f"Error: {e}"
 
+    @staticmethod
     def read_file_content(filepath: str) -> str:
+        """Read content from a file."""
         try:
-            with open(filepath, "r") as file:
-                content = file.read()
-            return content
+            with open(filepath, "r", encoding="utf-8") as file:
+                return file.read()
         except Exception as e:
             return f"Error: {e}"
 
-    # ! example: key = pygame.K_a
+    @staticmethod
     def is_pressed(key) -> bool:
-        import pygame  # ! Need to not pygame 2.6.1 (SDL 2.28.4, Python 3.13.7) Hello from the pygame community. https://www.pygame.org/contribute.html
+        """
+        Detect if a specific key is pressed using pygame.
+        
+        Args:
+            key: Pygame key constant (e.g., pygame.K_a)
+            
+        Returns:
+            True if key was pressed, False otherwise
+        """
+        import pygame
 
         pygame.init()
         pygame.display.set_mode((100, 100))
@@ -364,34 +410,31 @@ class UsableFunctions:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == key:
-                        pressed = True
-                        running = False
+                elif event.type == pygame.KEYDOWN and event.key == key:
+                    pressed = True
+                    running = False
 
             clock.tick(30)
 
         pygame.quit()
         return pressed
 
+    @staticmethod
     def install_package(package: str) -> str:
+        """Install a Python package using pip."""
         try:
             subprocess.check_call([sys.executable, "-m", "pip", "install", package])
             return "Success"
-        except subprocess.CalledProcessError as e:
-            return f"Installation failed: {e}"
-        except Exception as e:
+        except (subprocess.CalledProcessError, Exception) as e:
             return f"Installation failed: {e}"
 
+    @staticmethod
     def uninstall_package(package: str) -> str:
+        """Uninstall a Python package using pip."""
         try:
-            subprocess.check_call(
-                [sys.executable, "-m", "pip", "uninstall", "-y", package]
-            )
+            subprocess.check_call([sys.executable, "-m", "pip", "uninstall", "-y", package])
             return "Success"
-        except subprocess.CalledProcessError as e:
-            return f"Uninstallation failed: {e}"
-        except Exception as e:
+        except (subprocess.CalledProcessError, Exception) as e:
             return f"Uninstallation failed: {e}"
 
     @staticmethod
@@ -399,36 +442,35 @@ class UsableFunctions:
         full_git_url: str = "",
         creator_name: str = "Artemon0",
         repo_name: str = "UsableFunctions",
-    ) -> dict:
+    ) -> Dict[str, str]:
+        """
+        Install a Python package from a Git repository.
+        
+        Args:
+            full_git_url: Full Git URL (optional)
+            creator_name: GitHub username
+            repo_name: Repository name
+            
+        Returns:
+            Dictionary with status and URL
+        """
         with tqdm(total=100, desc="Installing", ncols=60) as pbar:
             if not full_git_url:
                 full_git_url = f"https://github.com/{creator_name}/{repo_name}.git"
             pbar.update(20)
+            
             try:
-                subprocess.check_call(
-                    [
-                        sys.executable,
-                        "-m",
-                        "pip",
-                        "install",
-                        "--upgrade",
-                        f"git+{full_git_url}",
-                    ],
-                    stdout=False,
-                    stderr=False,
-                )
+                subprocess.check_call([
+                    sys.executable, "-m", "pip", "install", "--upgrade",
+                    f"git+{full_git_url}"
+                ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                
                 for _ in range(80):
                     time.sleep(0.02)
                     pbar.update(1)
+                    
                 return {"status": "Success", "url": full_git_url}
-            except subprocess.CalledProcessError as e:
-                pbar.update(80)
-                return {
-                    "status": "Installation failed",
-                    "error": str(e),
-                    "url": full_git_url,
-                }
-            except Exception as e:
+            except (subprocess.CalledProcessError, Exception) as e:
                 pbar.update(80)
                 return {
                     "status": "Installation failed",
@@ -437,69 +479,57 @@ class UsableFunctions:
                 }
 
     @staticmethod
-    def update_this_program_visual():
+    def update_this_program_visual() -> str:
+        """Update UsableFunctions package with visual progress bar."""
         try:
             with tqdm(total=100, desc="Updating", ncols=60, smoothing=True) as pbar:
                 pbar.update(20)
 
-                try:
-                    result = subprocess.run(
-                        [
-                            sys.executable,
-                            "-m",
-                            "pip",
-                            "install",
-                            "--upgrade",
-                            "git+https://github.com/Artemon0/UsableFunctions.git",
-                        ],
-                        capture_output=True,
-                        check=False,
-                    )
+                result = subprocess.run([
+                    sys.executable, "-m", "pip", "install", "--upgrade",
+                    "git+https://github.com/Artemon0/UsableFunctions.git"
+                ], capture_output=True, check=False)
 
-                    for _ in range(60):
-                        time.sleep(0.02)
-                        pbar.update(1)
+                for _ in range(60):
+                    time.sleep(0.02)
+                    pbar.update(1)
 
-                    if result.returncode == 0:
-                        pbar.update(20)
-
-                        subprocess.run(
-                            [sys.executable, "-m", "pip", "show", "UsableFunctions"],
-                            check=True,
-                        )
-                        return "Update successful"
-                    else:
-                        pbar.update(20)
-                        return f"Update failed: {result.stderr}"
-
-                except subprocess.CalledProcessError as e:
-                    pbar.update(80)
-                    return f"Update failed: {e.stderr}"
+                if result.returncode == 0:
+                    pbar.update(20)
+                    subprocess.run([
+                        sys.executable, "-m", "pip", "show", "UsableFunctions"
+                    ], check=True)
+                    return "Update successful"
+                
+                pbar.update(20)
+                return f"Update failed: {result.stderr.decode()}"
 
         except Exception as e:
             return f"Update failed: {str(e)}"
 
     @staticmethod
-    def run_py_file(filepath: str = ""):
+    def run_py_file(filepath: str = "") -> str:
+        """Run a Python file."""
         try:
             subprocess.run([sys.executable, filepath], check=True)
             return "Success"
-        except subprocess.CalledProcessError as e:
-            return f"Error: {e}"
-        except Exception as e:
+        except (subprocess.CalledProcessError, Exception) as e:
             return f"Error: {e}"
 
     @staticmethod
-    def run_py_file_with_args(filepath: str = "", args: list = []):
+    def run_py_file_with_args(filepath: str = "", args: Optional[List[str]] = None) -> str:
+        """Run a Python file with command-line arguments."""
+        if args is None:
+            args = []
         try:
             subprocess.run([sys.executable, filepath, *args], check=True)
             return "Success"
-        except subprocess.CalledProcessError as e:
-            return f"Error: {e}"
-        except Exception as e:
+        except (subprocess.CalledProcessError, Exception) as e:
             return f"Error: {e}"
 
-    def run_python_code(sefl, code: str):
+    @staticmethod
+    def run_python_code(code: str) -> str:
+        """Execute Python code dynamically."""
         try:
             exec(code)
             return "Code executed successfully"
@@ -510,81 +540,101 @@ class UsableFunctions:
     def token(
         token: str,
         valid_token: str = "22kc6MhrlSrzpJSbLcSzggFFOYoitIjWreePqqv7U1igIiAZ1PmlxHCgS5v4",
-    ) -> dict:
-        def is_token_valid(self) -> bool:
-            if token == valid_token:
-                return True
-            return False
-
-        def get_token(self):
-            return token
-
-        return {"valid": is_token_valid(), "tocken": get_token()}
+    ) -> Dict[str, Union[bool, str]]:
+        """
+        Validate a token against a valid token.
+        
+        Returns:
+            Dictionary with validation status and token
+        """
+        return {
+            "valid": token == valid_token,
+            "token": token
+        }
 
     @staticmethod
     def users(
-        users: list[dict["name":str, "password":str, "id":int]],  # noqa: F821
-        user: dict[str : str | int],
-    ) -> dict[str : bool | int]:
+        users: List[Dict[str, Union[str, int]]],
+        user: Dict[str, Union[str, int]],
+    ) -> Dict[str, Union[bool, str, int]]:
+        """Check if a user exists in the users list."""
         if user in users:
-            res = {"success": True} | user
-            return res
-        else:
-            return {"success": False}
+            return {"success": True, **user}
+        return {"success": False}
 
+    @staticmethod
     def register(
-        users: list[dict["name":str, "password":str, "id":int]],  # noqa: F821
-        new_user: dict["name":str, "password":str, "id":int],  # noqa: F821
-    ) -> dict:
-        a = [i for i in users]
-        r = []
-        for q in a:
-            d = q["id"]
-            r.append(d)
-
-        if new_user["id"] in r:
+        users: List[Dict[str, Union[str, int]]],
+        new_user: Dict[str, Union[str, int]],
+    ) -> List[Dict[str, Union[str, int]]]:
+        """Register a new user, auto-incrementing ID if it already exists."""
+        existing_ids = {user["id"] for user in users}
+        
+        while new_user["id"] in existing_ids:
             new_user["id"] += 1
+            
         users.append(new_user)
         return users
 
+    @staticmethod
     def check_password(
         username: str,
         password: str,
         correct_username: str,
         correct_password: str,
-        password_long: int = 0,
+        password_min_length: int = 0,
     ) -> bool:
-        if len(password) < password_long and password_long != 0:
-            print(f"Password may by > {password_long} char long!")
-        try:
-            if correct_username == username and correct_password == password:
-                return True
-            else:
-                return False
-        except Exception as e:
-            print(f"Error: {e}")
+        """
+        Validate username and password.
+        
+        Args:
+            username: Provided username
+            password: Provided password
+            correct_username: Expected username
+            correct_password: Expected password
+            password_min_length: Minimum password length requirement
+            
+        Returns:
+            True if credentials match, False otherwise
+        """
+        if password_min_length > 0 and len(password) < password_min_length:
+            print(f"Password must be at least {password_min_length} characters long!")
+            return False
+            
+        return username == correct_username and password == correct_password
 
     class Circle:
+        """Helper class for circle-related calculations."""
+        
         def __init__(self, radius: float = 0, T: float = 0, N: float = 0, t: float = 0):
+            """
+            Initialize Circle with parameters.
+            
+            Args:
+                radius: Circle radius
+                T: Period
+                N: Number of rotations
+                t: Time
+            """
             self.radius = radius
             self.T = T
             self.N = N
             self.t = t
 
-        def calculate_v(self, radius, T):
-            pi = math.pi
-            res = 2 * (pi * radius)
-            return res
-            del res
+        def calculate_v(self, radius: float, T: float) -> float:
+            """Calculate velocity (circumference)."""
+            return 2 * math.pi * radius
 
-        def calculate_T(self, t: float = 0, N: float = 0, n: float = 0):
+        def calculate_T(self, t: float = 0, N: float = 0, n: float = 0) -> float:
+            """Calculate period T."""
             if n != 0:
                 return 1 / n
-            else:
-                return t / N
+            return t / N if N != 0 else 0
 
-        def calculate_n(self, N: float, t: float):
-            return N / t
+        def calculate_n(self, N: float, t: float) -> float:
+            """Calculate frequency n."""
+            return N / t if t != 0 else 0
 
-        def calculate_N(self, n: float, t: float):
+        def calculate_N(self, n: float, t: float) -> float:
+            """Calculate number of rotations N."""
             return n * t
