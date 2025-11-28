@@ -17,7 +17,6 @@ import shutil
 import subprocess
 import sys
 import time
-from typing import Dict, List, Union, Optional
 
 import PyInstaller.__main__
 from tqdm import tqdm
@@ -44,7 +43,7 @@ class UsableFunctions:
         print(self)
 
     @staticmethod
-    def calculator(a: float, b: float, op: str) -> Union[float, str]:
+    def calculator(a: float, b: float, op: str) -> float | str:
         """
         Perform basic arithmetic operations.
         
@@ -304,7 +303,7 @@ class UsableFunctions:
         return "".join(chr(random.randint(33, 126)) for _ in range(length))
 
     @staticmethod
-    def factorial(n: int) -> Union[str, int]:
+    def factorial(n: int) -> str | int:
         """Calculate factorial recursively."""
         if n < 0:
             return "Undefined for negative numbers"
@@ -442,7 +441,7 @@ class UsableFunctions:
         full_git_url: str = "",
         creator_name: str = "Artemon0",
         repo_name: str = "UsableFunctions",
-    ) -> Dict[str, str]:
+    ) -> dict[str, str]:
         """
         Install a Python package from a Git repository.
         
@@ -517,7 +516,7 @@ class UsableFunctions:
             return f"Error: {e}"
 
     @staticmethod
-    def run_py_file_with_args(filepath: str = "", args: Optional[List[str]] = None) -> str:
+    def run_py_file_with_args(filepath: str = "", args: list[str] | None = None) -> str:
         """Run a Python file with command-line arguments."""
         if args is None:
             args = []
@@ -540,7 +539,7 @@ class UsableFunctions:
     def token(
         token: str,
         valid_token: str = "22kc6MhrlSrzpJSbLcSzggFFOYoitIjWreePqqv7U1igIiAZ1PmlxHCgS5v4",
-    ) -> Dict[str, Union[bool, str]]:
+    ) -> dict[str, bool | str]:
         """
         Validate a token against a valid token.
         
@@ -554,9 +553,9 @@ class UsableFunctions:
 
     @staticmethod
     def users(
-        users: List[Dict[str, Union[str, int]]],
-        user: Dict[str, Union[str, int]],
-    ) -> Dict[str, Union[bool, str, int]]:
+        users: list[dict[str, str | int]],
+        user: dict[str, str | int],
+    ) -> dict[str, bool | str | int]:
         """Check if a user exists in the users list."""
         if user in users:
             return {"success": True, **user}
@@ -564,9 +563,9 @@ class UsableFunctions:
 
     @staticmethod
     def register(
-        users: List[Dict[str, Union[str, int]]],
-        new_user: Dict[str, Union[str, int]],
-    ) -> List[Dict[str, Union[str, int]]]:
+        users: list[dict[str, str | int]],
+        new_user: dict[str, str | int],
+    ) -> list[dict[str, str | int]]:
         """Register a new user, auto-incrementing ID if it already exists."""
         existing_ids = {user["id"] for user in users}
         
