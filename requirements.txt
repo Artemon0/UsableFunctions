@@ -1,3 +1,5 @@
 tqdm
 PyInstaller
 pygame
+psutil
+Pillow

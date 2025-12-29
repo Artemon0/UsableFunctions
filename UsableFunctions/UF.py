@@ -17,6 +17,10 @@ import shutil
 import subprocess
 import sys
 import time
+import socket
+import uuid
+import psutil
+import tkinter as tk
 
 import PyInstaller.__main__
 from tqdm import tqdm
@@ -46,12 +50,12 @@ class UsableFunctions:
     def calculator(a: float, b: float, op: str) -> float | str:
         """
         Perform basic arithmetic operations.
-        
+
         Args:
             a: First operand
             b: Second operand
             op: Operator (+, -, *, /, %, **)
-            
+
         Returns:
             Result of the operation or error message
         """
@@ -59,9 +63,9 @@ class UsableFunctions:
             "+": lambda x, y: x + y,
             "-": lambda x, y: x - y,
             "*": lambda x, y: x * y,
-            "**": lambda x, y: x ** y,
+            "**": lambda x, y: x**y,
         }
-        
+
         if op in operations:
             return operations[op](a, b)
         elif op in ("/", "%"):
@@ -69,24 +73,24 @@ class UsableFunctions:
                 return a / b if op == "/" else a % b
             except ZeroDivisionError:
                 return "Error: Division by zero"
-        
+
         return "Invalid operator"
 
     @staticmethod
     def quest(player: str = "Unnamed", difficulty: int = 1) -> str:
         """
         Run a math quiz game with different difficulty levels.
-        
+
         Args:
             player: Player name
             difficulty: Difficulty level (1-3)
-            
+
         Returns:
             Final score message
         """
         score = 0
         print(f"{player}, welcome to the quest!")
-        
+
         if difficulty == 1:
             user_answer = input("2 + 2 = ")
             if user_answer == "4":
@@ -152,47 +156,50 @@ class UsableFunctions:
     def py_to_exe(file: str = "main.py") -> str:
         """
         Convert Python file to executable using PyInstaller.
-        
+
         Args:
             file: Path to Python file
-            
+
         Returns:
             "Success" or "Failed"
         """
         if not os.path.exists(file):
             print(f"File {file} does not exist.")
             return "Failed"
-        
+
         import warnings
+
         warnings.filterwarnings("ignore")
 
         try:
             with tqdm(total=100, desc="Converting", ncols=60) as pbar:
                 pbar.update(10)
-                
-                PyInstaller.__main__.run([
-                    file,
-                    "--onefile",
-                    "--clean",
-                    "--noconfirm",
-                ])
+
+                PyInstaller.__main__.run(
+                    [
+                        file,
+                        "--onefile",
+                        "--clean",
+                        "--noconfirm",
+                    ]
+                )
                 pbar.update(40)
-                
+
                 exe_name = file.replace(".py", ".exe")
                 if os.path.exists(f"./dist/{exe_name}"):
                     shutil.move(f"./dist/{exe_name}", f"./{exe_name}")
-                
+
                 # Clean up temporary files
                 for path in ["./build", "./dist"]:
                     if os.path.exists(path):
                         shutil.rmtree(path)
-                
+
                 spec_file = file.replace(".py", ".spec")
                 if os.path.exists(spec_file):
                     os.remove(spec_file)
-                
+
                 pbar.update(40)
-                
+
                 for _ in tqdm(range(10), desc="Cleaning", ncols=60):
                     time.sleep(0.2)
                 pbar.update(10)
@@ -213,7 +220,7 @@ class UsableFunctions:
     def game() -> str:
         """
         Play a number guessing game.
-        
+
         Returns:
             "Game Over" when finished
         """
@@ -227,19 +234,21 @@ class UsableFunctions:
             try:
                 guess = int(user_input)
                 attempts += 1
-                
+
                 if not 1 <= guess <= 100:
                     print("Please guess a number within the range of 1 to 100.")
                     continue
-                    
+
                 if guess < number_to_guess:
                     print("Too low.")
                 elif guess > number_to_guess:
                     print("Too high.")
                 else:
-                    print(f"Congratulations! You've guessed the number {number_to_guess} in {attempts} attempts.")
+                    print(
+                        f"Congratulations! You've guessed the number {number_to_guess} in {attempts} attempts."
+                    )
                     break
-                    
+
             except ValueError:
                 print("Invalid input. Please enter a number.")
 
@@ -321,20 +330,20 @@ class UsableFunctions:
         """Run an interactive calculator in a loop."""
         print("Welcome to the While Calculator!")
         print("Type 'exit' to quit.")
-        
+
         while True:
             a_input = input("Enter first number: ")
             if a_input.lower() == "exit":
                 break
-                
+
             op = input("Enter operator (+, -, *, /, %, **): ")
             if op.lower() == "exit":
                 break
-                
+
             b_input = input("Enter second number: ")
             if b_input.lower() == "exit":
                 break
-                
+
             try:
                 a = float(a_input)
                 b = float(b_input)
@@ -352,15 +361,22 @@ class UsableFunctions:
     def update_this_program() -> str:
         """Update UsableFunctions package from GitHub."""
         try:
-            subprocess.run([
-                sys.executable, "-m", "pip", "install", "--upgrade",
-                "git+https://github.com/Artemon0/UsableFunctions.git"
-            ], check=True)
+            subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "pip",
+                    "install",
+                    "--upgrade",
+                    "git+https://github.com/Artemon0/UsableFunctions.git",
+                ],
+                check=True,
+            )
 
-            subprocess.run([
-                sys.executable, "-m", "pip", "show", "UsableFunctions"
-            ], check=True)
-            
+            subprocess.run(
+                [sys.executable, "-m", "pip", "show", "UsableFunctions"], check=True
+            )
+
             return "Update successful"
         except (subprocess.CalledProcessError, Exception) as e:
             return f"Update failed: {e}"
@@ -389,10 +405,10 @@ class UsableFunctions:
     def is_pressed(key) -> bool:
         """
         Detect if a specific key is pressed using pygame.
-        
+
         Args:
             key: Pygame key constant (e.g., pygame.K_a)
-            
+
         Returns:
             True if key was pressed, False otherwise
         """
@@ -431,7 +447,9 @@ class UsableFunctions:
     def uninstall_package(package: str) -> str:
         """Uninstall a Python package using pip."""
         try:
-            subprocess.check_call([sys.executable, "-m", "pip", "uninstall", "-y", package])
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "uninstall", "-y", package]
+            )
             return "Success"
         except (subprocess.CalledProcessError, Exception) as e:
             return f"Uninstallation failed: {e}"
@@ -444,12 +462,12 @@ class UsableFunctions:
     ) -> dict[str, str]:
         """
         Install a Python package from a Git repository.
-        
+
         Args:
             full_git_url: Full Git URL (optional)
             creator_name: GitHub username
             repo_name: Repository name
-            
+
         Returns:
             Dictionary with status and URL
         """
@@ -457,17 +475,25 @@ class UsableFunctions:
             if not full_git_url:
                 full_git_url = f"https://github.com/{creator_name}/{repo_name}.git"
             pbar.update(20)
-            
+
             try:
-                subprocess.check_call([
-                    sys.executable, "-m", "pip", "install", "--upgrade",
-                    f"git+{full_git_url}"
-                ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                
+                subprocess.check_call(
+                    [
+                        sys.executable,
+                        "-m",
+                        "pip",
+                        "install",
+                        "--upgrade",
+                        f"git+{full_git_url}",
+                    ],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+
                 for _ in range(80):
                     time.sleep(0.02)
                     pbar.update(1)
-                    
+
                 return {"status": "Success", "url": full_git_url}
             except (subprocess.CalledProcessError, Exception) as e:
                 pbar.update(80)
@@ -484,10 +510,18 @@ class UsableFunctions:
             with tqdm(total=100, desc="Updating", ncols=60, smoothing=True) as pbar:
                 pbar.update(20)
 
-                result = subprocess.run([
-                    sys.executable, "-m", "pip", "install", "--upgrade",
-                    "git+https://github.com/Artemon0/UsableFunctions.git"
-                ], capture_output=True, check=False)
+                result = subprocess.run(
+                    [
+                        sys.executable,
+                        "-m",
+                        "pip",
+                        "install",
+                        "--upgrade",
+                        "git+https://github.com/Artemon0/UsableFunctions.git",
+                    ],
+                    capture_output=True,
+                    check=False,
+                )
 
                 for _ in range(60):
                     time.sleep(0.02)
@@ -495,11 +529,12 @@ class UsableFunctions:
 
                 if result.returncode == 0:
                     pbar.update(20)
-                    subprocess.run([
-                        sys.executable, "-m", "pip", "show", "UsableFunctions"
-                    ], check=True)
+                    subprocess.run(
+                        [sys.executable, "-m", "pip", "show", "UsableFunctions"],
+                        check=True,
+                    )
                     return "Update successful"
-                
+
                 pbar.update(20)
                 return f"Update failed: {result.stderr.decode()}"
 
@@ -542,14 +577,11 @@ class UsableFunctions:
     ) -> dict[str, bool | str]:
         """
         Validate a token against a valid token.
-        
+
         Returns:
             Dictionary with validation status and token
         """
-        return {
-            "valid": token == valid_token,
-            "token": token
-        }
+        return {"valid": token == valid_token, "token": token}
 
     @staticmethod
     def users(
@@ -568,10 +600,10 @@ class UsableFunctions:
     ) -> list[dict[str, str | int]]:
         """Register a new user, auto-incrementing ID if it already exists."""
         existing_ids = {user["id"] for user in users}
-        
+
         while new_user["id"] in existing_ids:
             new_user["id"] += 1
-            
+
         users.append(new_user)
         return users
 
@@ -585,30 +617,30 @@ class UsableFunctions:
     ) -> bool:
         """
         Validate username and password.
-        
+
         Args:
             username: Provided username
             password: Provided password
             correct_username: Expected username
             correct_password: Expected password
             password_min_length: Minimum password length requirement
-            
+
         Returns:
             True if credentials match, False otherwise
         """
         if password_min_length > 0 and len(password) < password_min_length:
             print(f"Password must be at least {password_min_length} characters long!")
             return False
-            
+
         return username == correct_username and password == correct_password
 
     class Circle:
         """Helper class for circle-related calculations."""
-        
+
         def __init__(self, radius: float = 0, T: float = 0, N: float = 0, t: float = 0):
             """
             Initialize Circle with parameters.
-            
+
             Args:
                 radius: Circle radius
                 T: Period
@@ -637,3 +669,206 @@ class UsableFunctions:
         def calculate_N(self, n: float, t: float) -> float:
             """Calculate number of rotations N."""
             return n * t
+
+        def calculate_t(self, N: float, t: float) -> float:
+            """Calculate time t."""
+            return N * t if N != 0 else 0
+
+    @staticmethod
+    def get_ip_address() -> str:
+        """Get the IP address of the current machine."""
+        return socket.gethostbyname(socket.gethostname())
+
+    @staticmethod
+    def get_mac_address() -> str:
+        """Get the MAC address of the current machine."""
+        return ":".join(
+            [
+                "{:02x}".format((uuid.getnode() >> ele) & 0xFF)
+                for ele in range(0, 8 * 6, 8)
+            ][::-1]
+        )
+
+    @staticmethod
+    def get_machine_info() -> dict[str, str]:
+        """Get basic machine information."""
+        return {
+            "hostname": socket.gethostname(),
+            "ip_address": UsableFunctions.get_ip_address(),
+            "mac_address": UsableFunctions.get_mac_address(),
+            "platform": sys.platform,
+            "python_version": sys.version,
+        }
+
+    @staticmethod
+    def get_memory_info() -> dict[str, str]:
+        """Get memory information."""
+        return {
+            "total": str(round(psutil.virtual_memory().total / (1024**3), 2)) + " GB",
+            "available": str(round(psutil.virtual_memory().available / (1024**3), 2))
+            + " GB",
+            "used": str(round(psutil.virtual_memory().used / (1024**3), 2)) + " GB",
+            "percent": str(psutil.virtual_memory().percent) + " %",
+        }
+
+    @staticmethod
+    def optimize_system() -> str:  # i need MORE FUNCTIONS IN THIS func
+        """Optimize system performance by clearing memory cache. WARNING: Use with caution! This may affect system stability and you need to reload the internet(like me)."""
+        try:
+            if sys.platform == "win32":
+                os.system("echo off | clip")  # Clear clipboard
+                os.system("ipconfig /flushdns")  # Flush DNS cache
+                os.system("ipconfig /release")  # Release IP address
+                # I need to stop process before cleaing temp files(can't clear!)
+                os.system("ipconfig /flushdns")  # Flush DNS cache
+
+                os.system("del /q %temp%\\*")  # Delete temporary files
+                os.system("taskkill /f /im explorer.exe")  # Restart Explorer process
+                os.system("start explorer")
+            elif sys.platform == "linux" or sys.platform == "darwin":
+                os.system(
+                    "sync; echo 3 > /proc/sys/vm/drop_caches"
+                )  # Clear cache (Linux)
+            return "System optimized successfully"
+        except Exception as e:
+            return f"Optimization failed: {e}"
+
+    @staticmethod
+    def get_disk_info() -> dict[str, str]:
+        """Get disk information."""
+        return {
+            "total": str(round(psutil.disk_usage("/").total / (1024**3), 2)) + " GB",
+            "used": str(round(psutil.disk_usage("/").used / (1024**3), 2)) + " GB",
+            "free": str(round(psutil.disk_usage("/").free / (1024**3), 2)) + " GB",
+            "percent": str(psutil.disk_usage("/").percent) + " %",
+        }
+
+    @staticmethod
+    def get_cpu_info() -> dict[str, str]:
+        """Get CPU information."""
+        return {
+            "physical_cores": str(psutil.cpu_count(logical=False)),
+            "total_cores": str(psutil.cpu_count(logical=True)),
+            "max_frequency": str(psutil.cpu_freq().max) + " MHz",
+            "min_frequency": str(psutil.cpu_freq().min) + " MHz",
+            "current_frequency": str(psutil.cpu_freq().current) + " MHz",
+            "usage_percent": str(psutil.cpu_percent(interval=1)) + " %",
+        }
+
+    @staticmethod
+    def system_panel():
+        tk_root = tk.Tk()
+        tk_root.title("System Information Panel")
+        tk_root.geometry("600x820")
+        
+        tk_root.resizable(False, False)
+        info = UsableFunctions.get_machine_info()
+        memory = UsableFunctions.get_memory_info()
+        disk = UsableFunctions.get_disk_info()
+        cpu = UsableFunctions.get_cpu_info()
+        tk.Label(
+            tk_root,
+            text="WARNING: Use with caution! \nThis may affect system stability and you need to reload the internet(like me).",
+            font=("Arial", 10, "bold"),
+        ).pack(pady=10)
+        tk.Label(tk_root, text="System Information", font=("Arial", 16, "bold")).pack(
+            pady=10
+        )
+        tk.Label(
+            tk_root, text=f"Hostname: {info['hostname']}", font=("Arial", 12)
+        ).pack()
+        tk.Label(
+            tk_root, text=f"IP Address: {info['ip_address']}", font=("Arial", 12)
+        ).pack()
+        tk.Label(
+            tk_root, text=f"MAC Address: {info['mac_address']}", font=("Arial", 12)
+        ).pack()
+        tk.Label(
+            tk_root, text=f"Platform: {info['platform']}", font=("Arial", 12)
+        ).pack()
+        tk.Label(
+            tk_root,
+            text=f"Python Version: {info['python_version']}",
+            font=("Arial", 12),
+        ).pack()
+        tk.Label(tk_root, text="Memory Information", font=("Arial", 16, "bold")).pack(
+            pady=10
+        )
+        tk.Label(tk_root, text=f"Total: {memory['total']}", font=("Arial", 12)).pack()
+        tk.Label(
+            tk_root, text=f"Available: {memory['available']}", font=("Arial", 12)
+        ).pack()
+        tk.Label(tk_root, text=f"Used: {memory['used']}", font=("Arial", 12)).pack()
+        tk.Label(
+            tk_root, text=f"Percent: {memory['percent']}", font=("Arial", 12)
+        ).pack()
+        tk.Label(tk_root, text="Disk Information", font=("Arial", 16, "bold")).pack(
+            pady=10
+        )
+        tk.Label(tk_root, text=f"Total: {disk['total']}", font=("Arial", 12)).pack()
+        tk.Label(tk_root, text=f"Used: {disk['used']}", font=("Arial", 12)).pack()
+        tk.Label(tk_root, text=f"Free: {disk['free']}", font=("Arial", 12)).pack()
+        tk.Label(tk_root, text=f"Percent: {disk['percent']}", font=("Arial", 12)).pack()
+        tk.Label(tk_root, text="CPU Information", font=("Arial", 16, "bold")).pack(
+            pady=10
+        )
+        tk.Label(
+            tk_root, text=f"Physical Cores: {cpu['physical_cores']}", font=("Arial", 12)
+        ).pack()
+        tk.Label(
+            tk_root, text=f"Total Cores: {cpu['total_cores']}", font=("Arial", 12)
+        ).pack()
+        tk.Label(
+            tk_root, text=f"Max Frequency: {cpu['max_frequency']}", font=("Arial", 12)
+        ).pack()
+        tk.Label(
+            tk_root, text=f"Min Frequency: {cpu['min_frequency']}", font=("Arial", 12)
+        ).pack()
+        tk.Label(
+            tk_root,
+            text=f"Current Frequency: {cpu['current_frequency']}",
+            font=("Arial", 12),
+        ).pack()
+        tk.Label(
+            tk_root, text=f"Usage Percent: {cpu['usage_percent']}", font=("Arial", 12)
+        ).pack()
+        tk.Button(
+            tk_root,
+            text="Optimize System",
+            command=UsableFunctions.optimize_system,
+            font=("Arial", 12),
+        ).pack(pady=20)
+
+        # relod after pressing button
+        def reload():
+            tk_root.destroy()
+            UsableFunctions.system_panel()
+            
+
+        tk.Button(tk_root, text="Reload", command=reload, font=("Arial", 12)).pack()
+
+        tk_root.mainloop()
+
+    class FileConverter:
+        """Helper class for file conversion operations."""
+
+        @staticmethod
+        def png_to_jpg(png_file: str, jpg_file: str) -> str:
+            """
+            Convert PNG image to JPG format.
+
+            Args:
+                png_file: Path to the PNG file
+                jpg_file: Path to save the JPG file
+
+            Returns:
+                "Success" or "Error" message
+            """
+            from PIL import Image
+            try:
+                with(Image.open(png_file)) as img:
+                    rgb_img = img.convert("RGB")
+                    rgb_img.save(jpg_file, "JPEG")
+                    return "Success"
+            except Exception as e:
+                return f"Error: {e}"
