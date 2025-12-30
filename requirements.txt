@@ -3,3 +3,6 @@ PyInstaller
 pygame
 psutil
 Pillow
+fpdf
+PyPDF2
+pdf2image

@@ -872,3 +872,127 @@ class UsableFunctions:
                     return "Success"
             except Exception as e:
                 return f"Error: {e}"
+        
+        @staticmethod
+        def jpg_to_png(jpg_file: str, png_file: str) -> str:
+            """
+            Convert JPG image to PNG format.
+
+            Args:
+                jpg_file: Path to the JPG file
+                png_file: Path to save the PNG file
+
+            Returns:
+                "Success" or "Error" message
+            """
+            from PIL import Image
+            try:
+                with(Image.open(jpg_file)) as img:
+                    img.save(png_file, "PNG")
+                    return "Success"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        @staticmethod
+        def txt_to_pdf(txt_file: str, pdf_file: str) -> str:
+            """
+            Convert TXT file to PDF format.
+
+            Args:
+                txt_file: Path to the TXT file
+                pdf_file: Path to save the PDF file
+
+            Returns:
+                "Success" or "Error" message
+            """
+            from fpdf import FPDF
+            try:
+                pdf = FPDF()
+                pdf.add_page()
+                pdf.set_auto_page_break(auto=True, margin=15)
+                pdf.set_font("Arial", size=12)
+
+                with open(txt_file, "r", encoding="utf-8") as file:
+                    for line in file:
+                        pdf.cell(0, 10, txt=line.encode('latin-1', 'replace').decode('latin-1'), ln=True)
+
+                pdf.output(pdf_file)
+                return "Success"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        @staticmethod
+        def pdf_to_txt(pdf_file: str, txt_file: str) -> str:
+            """
+            Convert PDF file to TXT format.
+
+            Args:
+                pdf_file: Path to the PDF file
+                txt_file: Path to save the TXT file
+
+            Returns:
+                "Success" or "Error" message
+            """
+            from PyPDF2 import PdfReader
+            try:
+                reader = PdfReader(pdf_file)
+                with open(txt_file, "w", encoding="utf-8") as file:
+                    for page in reader.pages:
+                        file.write(page.extract_text() + "\n")
+                return "Success"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        @staticmethod
+        def jpgs_to_pdf(jpg_files: list, pdf_file: str) -> str:
+            """
+            Convert multiple JPG images to a single PDF file.
+
+            Args:
+                jpg_files: List of paths to JPG files
+                pdf_file: Path to save the PDF file
+
+            Returns:
+                "Success" or "Error" message
+            """
+            from PIL import Image
+            try:
+                image_list = []
+                for jpg in jpg_files:
+                    img = Image.open(jpg).convert("RGB")
+                    image_list.append(img)
+
+                if image_list:
+                    image_list[0].save(
+                        pdf_file,
+                        save_all=True,
+                        append_images=image_list[1:],
+                    )
+                    return "Success"
+                else:
+                    return "Error: No JPG files provided"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        @staticmethod
+        def pdf_to_jpgs(pdf_file: str, jpg_files: list) -> str:
+            """
+            Convert a PDF file to multiple JPG images.
+
+            Args:
+                pdf_file: Path to the PDF file
+                jpg_files: List of paths to save the JPG files
+
+            Returns:
+                "Success" or "Error" message
+            """
+            from pdf2image import convert_from_path
+            try:
+                images = convert_from_path(pdf_file)
+                for i, image in enumerate(images):
+                    image.save(jpg_files[i], "JPEG")
+                return "Success"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        
