@@ -99,6 +99,7 @@ index.html
 functions.txt
 test.py
 .zencoder/
+.zenflow/
 
 # ===== Temporary files =====
 *.tmp
