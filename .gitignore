@@ -95,7 +95,6 @@ cython_debug/
 # ===== Project specific =====
 UFuse.py
 index.md
-index.html
 functions.txt
 test.py
 .zencoder/

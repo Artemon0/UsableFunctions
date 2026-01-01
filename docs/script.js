@@ -1,12 +1,12 @@
 // Theme Management
 function initializeTheme() {
     const themeSwitch = document.getElementById('themeSwitch');
-    const savedTheme = localStorage.getItem('theme');
+    // Default to light theme if no theme is saved
+    const savedTheme = localStorage.getItem('theme') || 'light';
 
-    if (savedTheme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        themeSwitch.checked = true;
-    }
+    // Apply the saved theme or default to light
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    themeSwitch.checked = savedTheme === 'dark';
 
     themeSwitch.addEventListener('change', function (e) {
         if (e.target.checked) {
@@ -59,6 +59,14 @@ function initializeLanguage() {
         }
     });
 }
+
+// Initialize everything when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTheme();
+    initializeSmoothScroll();
+    initializeLanguage();
+    Prism.highlightAll();
+});
 
 // Russian Translations
 function translateToRussian() {

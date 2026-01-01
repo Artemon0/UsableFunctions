@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>UsableFunctions - Python Utility Library</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <link href="../imgs/binary-code.png" rel="icon" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet"/>
+    <link href="styles.css" rel="stylesheet"/>
+    <script>
+        const savedTheme = localStorage.getItem('theme')
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme)
+        }
+    </script>
+</head>
+<body>
+<div class="switches-wrapper">
+    <div class="switch-container">
+        <label class="theme-switch" for="themeSwitch">
+            <input id="themeSwitch" type="checkbox"/>
+            <div class="slider">
+                <i class="fas fa-sun" style="color: #ffd700; margin-left: 6px"></i>
+                <i class="fas fa-moon" style="color: #c0c0c0; margin-right: 6px"></i>
+            </div>
+        </label>
+    </div>
+    <div class="switch-container">
+        <label class="lang-switch" for="langSwitch">
+            <input id="langSwitch" style="display: none" type="checkbox"/>
+            <i class="fas fa-language"></i>
+            <span class="lang-text">EN</span>
+        </label>
+    </div>
+</div>
+
+<header>
+    <div class="container">
+        <h1>UsableFunctions</h1>
+        <p>A powerful Python utility library for everyday tasks</p>
+        <a class="btn" href="https://github.com/Artemon0/UsableFunctions">View on GitHub</a>
+        <a class="btn" href="#installation">Get Started</a>
+    </div>
+</header>
+
+<div class="container">
+    <section class="installation" id="installation">
+        <h2>Installation</h2>
+        <p>Choose your preferred installation method:</p>
+
+        <div class="installation-method">
+            <h3>From ZIP</h3>
+            <a class="btn download-btn" href="https://github.com/Artemon0/UsableFunctions/archive/refs/heads/main.zip">
+                <i class="fas fa-download"></i> Download ZIP
+            </a>
+            <pre class="line-numbers"><code class="language-python">pip install -r requirements.txt</code></pre>
+        </div>
+
+        <div class="installation-method">
+            <h3>As a Package (Recommended)</h3>
+            <pre class="line-numbers"><code class="language-python">pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git</code></pre>
+        </div>
+    </section>
+
+    <section>
+        <h2>Quick Start</h2>
+        <p>Get started with this simple example:</p>
+        <pre class="line-numbers"><code class="language-python">from UsableFunctions.UF import UsableFunctions as u
+
+# Basic calculator example
+result = u.calculator(5, 7, '+')
+print(result)  # Output: 12
+
+# Generate a random password
+password = u.get_random_password(length=12)
+print(password)
+
+# Convert Python script to executable
+u.py_to_exe('your_script.py')</code></pre>
+    </section>
+
+    <section>
+        <h2>Available Functions</h2>
+        <ul>
+            <li><strong>calculator(a, b, operator)</strong><p>Perform basic arithmetic operations</p></li>
+            <li><strong>quest(player, difficulty)</strong><p>Interactive math quiz game with difficulty levels 1-3</p></li>
+            <li><strong>py_to_exe(file)</strong><p>Convert Python scripts to standalone executables</p></li>
+            <li><strong>get_random_password(length)</strong><p>Generate secure random passwords</p></li>
+            <li><strong>factorial(n)</strong><p>Calculate factorial of a number</p></li>
+            <li><strong>is_pressed(key)</strong><p>Check if a specific key is pressed</p></li>
+            <li><strong>install_package_git(url, creator, repo)</strong><p>Install Python packages from Git repositories</p></li>
+            <li><strong>write_in_new_file(filename, content)</strong><p>Create and write content to new files</p></li>
+            <li><strong>read_from_file(filename)</strong><p>Read content from existing files</p></li>
+            <li><strong>delete_file(filename)</strong><p>Delete a file from the system</p></li>
+            <li><strong>rename_file(old_name, new_name)</strong><p>Rename an existing file</p></li>
+            <li><strong>move_file(source, destination)</strong><p>Move a file to a new location</p></li>
+            <li><strong>Circle</strong><p>Class for circular motion calculations (velocity, period, frequency)</p></li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Features</h2>
+        <ul>
+            <li><strong>Easy to Use</strong><p>Simple and intuitive API design</p></li>
+            <li><strong>Comprehensive</strong><p>Wide range of utility functions for common tasks</p></li>
+            <li><strong>Well Documented</strong><p>Clear documentation and examples for each function</p></li>
+            <li><strong>Actively Maintained</strong><p>Regular updates and improvements</p></li>
+        </ul>
+    </section>
+
+    <section class="about-me">
+        <h2>About Me</h2>
+        <div class="about-container">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <img alt="Artem Onyshchenko" class="profile-image" src="https://avatars.githubusercontent.com/u/119106910?v=4"/>
+                    <h3>Artem Onyshchenko</h3>
+                    <p class="title">Python Developer</p>
+                </div>
+                <div class="profile-content">
+                    <p class="bio">12 y.o. Opensource Python developer focused on creating useful tools and libraries for the community. Creator of UsableFunctions and UsableFunctionsJava</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-value">1.6.0</span>
+                            <span class="stat-label">Current Version</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">GPL v3.0</span>
+                            <span class="stat-label">License</span>
+                        </div>
+                    </div>
+                    <div class="contact-links">
+                        <a class="contact-button email" href="mailto:artemon888.com@gmail.com">
+                            <i class="far fa-envelope"></i> Email Me
+                        </a>
+                        <a class="contact-button github" href="https://github.com/Artemon0">
+                            <i class="fab fa-github"></i> GitHub Profile
+                        </a>
+                        <a class="contact-button telegram" href="https://t.me/AOGames888" target="_blank">
+                            <i class="fab fa-telegram"></i> Telegram Channel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; margin-top: 4rem; padding: 2rem 0; border-top: 1px solid #eee;">
+        <p>© 2025 UsableFunctions. All rights reserved.</p>
+    </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
