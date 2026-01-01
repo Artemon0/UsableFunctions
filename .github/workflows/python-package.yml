@@ -30,7 +30,7 @@ jobs:
     
     - name: Test import
       run: |
-        python -c "from UsableFunctions import UsableFunctions; print('✅ Import successful'); print(f'Calculator test: 5 + 7 = {UsableFunctions().calculator(5, 7, \"+\")}')"
+        python -c "from UsableFunctions import UsableFunctions; uf = UsableFunctions(); print('✅ Import successful'); print('Calculator test: 5 + 7 = ' + str(uf.calculator(5, 7, '+')))"
 
   build:
     runs-on: ubuntu-latest

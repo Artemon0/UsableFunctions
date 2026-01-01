@@ -1,2 +1,2 @@
-from UsableFunctions.UF import UsableFunctions as u
+from UsableFunctions import UsableFunctions as u
 

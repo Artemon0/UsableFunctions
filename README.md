@@ -2,52 +2,74 @@
 
 A collection of utility functions for common programming tasks in Python.
 
-## Installation
+## 🚀 Installation
 
-### From GitHub (recommended)
+### From PyPI (recommended)
 
 ```bash
-pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git
+pip install usable-functions
 ```
 
-### From source
+### From GitHub (latest version)
 
 ```bash
-git clone https://github.com/Artemon0/UsableFunctions.git
-cd UsableFunctions
-pip install -e .
+pip install git+https://github.com/Artemon0/UsableFunctions.git
 ```
 
 ### Development setup
 
 ```bash
-pip install -r requirements.txt
-python build.py all
+git clone https://github.com/Artemon0/UsableFunctions.git
+cd UsableFunctions
+pip install -e '.[dev]'
 ```
 
-## Quick Start
+## ✨ Quick Start
 
 ```python
-from UsableFunctions.UF import UsableFunctions as u
+from UsableFunctions import UsableFunctions as uf
 
 # Calculator
-result = u.calculator(5, 7, '+')  # Returns: 12
+result = uf.calculator(5, 7, '+')  # Returns: 12
 
 # Generate random password
-password = u.get_random_password(12)
+password = uf.get_random_password(12)
 
 # Check if number is even or odd
-print(u.even_odd(42))  # Returns: "Even"
+print(uf.even_odd(42))  # Returns: "Even"
 
 # Play a quest game
-u.quest("Player1", difficulty=2)
+uf.quest("Player1", difficulty=2)
+```
+
+## 🎮 Interactive Examples
+
+Try it live in your browser!
+
+```python
+from UsableFunctions import UsableFunctions as uf
+
+# Calculate factorial
+print(f"Factorial of 5: {uf.factorial(5)}")
+
+# Generate a random color
+print(f"Random color: {uf.get_random_color()}")
+
+# Check if string is palindrome
+print(f"Is 'radar' a palindrome? {uf.is_palindrome('radar')}")
 ```
 
 ## 📚 Documentation
 
-Visit our [documentation website](https://artemon0.github.io/UsableFunctions/) for:
-- Interactive examples
-- Complete API reference
+Visit our [documentation website](https://artemon0.github.io/UsableFunctions/) for interactive examples and complete API reference.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) to get started.
+
+## 📜 License
+
+This project is licensed under the GPL v3.0 - see the [LICENSE](LICENSE) file for details.
 - Dark/Light theme support
 - Multi-language support (EN/RU)
 
