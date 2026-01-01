@@ -30,8 +30,7 @@ jobs:
     
     - name: Test import
       run: |
-        python -c "import sys; from UsableFunctions.UF import UsableFunctions; print('✅ Import successful'); print(f'Calculator test: 5 + 7 = {UsableFunctions().calculator(5, 7, \"+\")}')"
-        python -c "import sys; sys.path.insert(0, '.'); from UsableFunctions.UF import UsableFunctions; print('✅ Import with relative path successful')"
+        python -c "from UsableFunctions import UsableFunctions; print('✅ Import successful'); print(f'Calculator test: 5 + 7 = {UsableFunctions().calculator(5, 7, \"+\")}')"
 
   build:
     runs-on: ubuntu-latest
