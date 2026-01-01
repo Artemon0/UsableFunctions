@@ -54,8 +54,11 @@ jobs:
         # Clean up any existing builds
         rm -rf build dist *.egg-info
         
-        # Build the package using build
-        python -m build
+        # Create dist directory if it doesn't exist
+        mkdir -p dist
+        
+        # Build the package using setup.py directly
+        python setup.py sdist bdist_wheel
         
         # List built packages
         echo "Built packages:"
