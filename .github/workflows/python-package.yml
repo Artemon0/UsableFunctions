@@ -47,16 +47,30 @@ jobs:
     - name: Install build dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install build twine
+        pip install --upgrade build setuptools wheel twine setuptools-scm
     
+    - name: List project files
+      run: |
+        echo "Project structure:"
+        ls -la
+        echo "\nUsableFunctions package structure:"
+        ls -la UsableFunctions/
+
     - name: Build package
       run: |
-        # Ensure dist directory exists
-        mkdir -p dist
         # Clean up any existing builds
-        rm -rf dist/*
-        # Build the package
-        python -m build
+        rm -rf build dist *.egg-info
+        
+        # Ensure we have the latest build tools
+        python -m pip install --upgrade build setuptools wheel
+        
+        # Build with verbose output
+        echo "Building package..."
+        python -m build --verbose
+        
+        # List built packages
+        echo "\nBuilt packages:"
+        ls -la dist/
     
     - name: Check package
       run: |
