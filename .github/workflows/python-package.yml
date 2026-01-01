@@ -50,10 +50,20 @@ jobs:
         pip install build twine
     
     - name: Build package
-      run: python -m build
+      run: |
+        # Ensure dist directory exists
+        mkdir -p dist
+        # Clean up any existing builds
+        rm -rf dist/*
+        # Build the package
+        python -m build
     
     - name: Check package
-      run: twine check dist/*
+      run: |
+        # Verify dist directory has files
+        ls -la dist/
+        # Check the built package
+        twine check dist/*
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
