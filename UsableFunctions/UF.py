@@ -760,7 +760,7 @@ class UsableFunctions:
         tk_root = tk.Tk()
         tk_root.title("System Information Panel")
         tk_root.geometry("600x820")
-        
+
         tk_root.resizable(False, False)
         info = UsableFunctions.get_machine_info()
         memory = UsableFunctions.get_memory_info()
@@ -843,7 +843,6 @@ class UsableFunctions:
         def reload():
             tk_root.destroy()
             UsableFunctions.system_panel()
-            
 
         tk.Button(tk_root, text="Reload", command=reload, font=("Arial", 12)).pack()
 
@@ -865,14 +864,15 @@ class UsableFunctions:
                 "Success" or "Error" message
             """
             from PIL import Image
+
             try:
-                with(Image.open(png_file)) as img:
+                with Image.open(png_file) as img:
                     rgb_img = img.convert("RGB")
                     rgb_img.save(jpg_file, "JPEG")
                     return "Success"
             except Exception as e:
                 return f"Error: {e}"
-        
+
         @staticmethod
         def jpg_to_png(jpg_file: str, png_file: str) -> str:
             """
@@ -886,13 +886,14 @@ class UsableFunctions:
                 "Success" or "Error" message
             """
             from PIL import Image
+
             try:
-                with(Image.open(jpg_file)) as img:
+                with Image.open(jpg_file) as img:
                     img.save(png_file, "PNG")
                     return "Success"
             except Exception as e:
                 return f"Error: {e}"
-        
+
         @staticmethod
         def txt_to_pdf(txt_file: str, pdf_file: str) -> str:
             """
@@ -906,6 +907,7 @@ class UsableFunctions:
                 "Success" or "Error" message
             """
             from fpdf import FPDF
+
             try:
                 pdf = FPDF()
                 pdf.add_page()
@@ -914,13 +916,18 @@ class UsableFunctions:
 
                 with open(txt_file, "r", encoding="utf-8") as file:
                     for line in file:
-                        pdf.cell(0, 10, txt=line.encode('latin-1', 'replace').decode('latin-1'), ln=True)
+                        pdf.cell(
+                            0,
+                            10,
+                            txt=line.encode("latin-1", "replace").decode("latin-1"),
+                            ln=True,
+                        )
 
                 pdf.output(pdf_file)
                 return "Success"
             except Exception as e:
                 return f"Error: {e}"
-        
+
         @staticmethod
         def pdf_to_txt(pdf_file: str, txt_file: str) -> str:
             """
@@ -934,6 +941,7 @@ class UsableFunctions:
                 "Success" or "Error" message
             """
             from PyPDF2 import PdfReader
+
             try:
                 reader = PdfReader(pdf_file)
                 with open(txt_file, "w", encoding="utf-8") as file:
@@ -942,7 +950,7 @@ class UsableFunctions:
                 return "Success"
             except Exception as e:
                 return f"Error: {e}"
-        
+
         @staticmethod
         def jpgs_to_pdf(jpg_files: list, pdf_file: str) -> str:
             """
@@ -956,6 +964,7 @@ class UsableFunctions:
                 "Success" or "Error" message
             """
             from PIL import Image
+
             try:
                 image_list = []
                 for jpg in jpg_files:
@@ -973,7 +982,7 @@ class UsableFunctions:
                     return "Error: No JPG files provided"
             except Exception as e:
                 return f"Error: {e}"
-        
+
         @staticmethod
         def pdf_to_jpgs(pdf_file: str, jpg_files: list) -> str:
             """
@@ -987,6 +996,7 @@ class UsableFunctions:
                 "Success" or "Error" message
             """
             from pdf2image import convert_from_path
+
             try:
                 images = convert_from_path(pdf_file)
                 for i, image in enumerate(images):
@@ -994,5 +1004,3 @@ class UsableFunctions:
                 return "Success"
             except Exception as e:
                 return f"Error: {e}"
-        
-        
