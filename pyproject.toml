@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "UsableFunctions"
-version = "1.6.0"
+version = "1.7.0"
 description = "A collection of utility functions for common programming tasks"
 readme = "README.md"
 requires-python = ">=3.10"

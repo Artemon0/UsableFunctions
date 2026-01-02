@@ -112,11 +112,20 @@ function translateToRussian() {
         'Delete a file from the system': 'Удаление файла из системы',
         'Rename an existing file': 'Переименование существующего файла',
         'Move a file to a new location': 'Перемещение файла в новое местоположение',
-        'Class for circular motion calculations (velocity, period, frequency)': 'Класс для расчетов кругового движения (скорость, период, частота)'
+        'Class for circular motion calculations (velocity, period, frequency)': 'Класс для расчетов кругового движения (скорость, период, частота)',
+        'Get the IP address of the current machine': 'Получение IP-адреса текущего компьютера',
+        'Get MAC address of the current machine': 'Получение MAC-адреса текущего компьютера',
+        'Get information about the current machine(hostname, ip address, mac address, platform, python version)': 'Получение информации о текущем компьютере (hostname, ip address, mac address, platform, python version)',
+        'Get memory usage information': 'Получение информации о использовании памяти',
+        'Optimize system performance by clearing memory cache. WARNING: Use with caution! This may affect system stability and you need to reload the internet': 'Оптимизация производительности системы путем очистки кэша памяти. ВНИМАНИЕ: Используйте с осторожностью! Это может повлиять на стабильность системы и потребуется перезагрузить интернет',
+        'Get disk usage information': 'Получение информации о использовании диска',
+        'Get CPU usage information': 'Получение информации о использовании CPU',
+        'System information panel': 'Панель информации о системе',
+        'In this class, you can convert files from one format to another(png -> jpg, jpg -> png, etc.)': 'В этом классе вы можете конвертировать файлы из одного формата в другой (png -> jpg, jpg -> png, и т.д.)',
     };
 
     document.querySelectorAll('*:not(script):not(style)').forEach(element => {
-        if (element.tagName === 'STRONG') return;
+        // if (element.tagName === 'STRONG') return;
 
         if (element.tagName === 'P' || (element.childNodes.length === 1 && element.childNodes[0].nodeType === 3)) {
             const text = element.textContent.trim();

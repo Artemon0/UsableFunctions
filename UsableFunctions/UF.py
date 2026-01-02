@@ -25,13 +25,13 @@ import tkinter as tk
 import PyInstaller.__main__
 from tqdm import tqdm
 
-__version__ = "1.6.0"
+__version__ = "1.7.0"
 __author__ = "Artem Onyshchenko"
 __email__ = "artemon888.com@gmail.com"
 __license__ = "GPL v3.0"
 __url__ = "https://github.com/Artemon0/UsableFunctions.git"
 __download_url__ = (
-    "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.6.0.tar.gz"
+    "https://github.com/Artemon0/UsableFunctions/archive/refs/tags/1.7.0.tar.gz"
 )
 
 
@@ -757,6 +757,7 @@ class UsableFunctions:
 
     @staticmethod
     def system_panel():
+        """System Information Panel."""
         tk_root = tk.Tk()
         tk_root.title("System Information Panel")
         tk_root.geometry("600x820")
