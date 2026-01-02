@@ -762,7 +762,7 @@ class UsableFunctions:
         tk_root.title("System Information Panel")
         tk_root.geometry("600x820")
 
-        tk_root.resizable(False, False)
+        tk_root.resizable(True, True)
         info = UsableFunctions.get_machine_info()
         memory = UsableFunctions.get_memory_info()
         disk = UsableFunctions.get_disk_info()
