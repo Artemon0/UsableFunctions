@@ -85,6 +85,26 @@ Visit our [documentation website](https://artemon0.github.io/UsableFunctions/) f
 - **users(users: list(dict), user(dict)) -> dict** // is user un users
 - **register(users: list(dict()), user: dict) -> dict{new_users}**
 - **check_password(username: str, password: str, correct_username: str,correct_password: str, password_long: int = 0) -> bool:** // returns is your password valid :)
+- **get_ip_address() -> str** // Get IP address of current machine
+- **get_mac_address() -> str** // Get MAC address of current machine  
+- **get_machine_info() -> dict** // Get basic machine information (hostname, IP, MAC, platform, Python version)
+- **get_memory_info() -> dict** // Get memory information (total, available, used, percent)
+- **get_disk_info() -> dict** // Get disk information (total, used, free, percent)
+- **get_cpu_info() -> dict** // Get CPU information (cores, frequency, usage)
+- **optimize_system() -> str** // Optimize system performance (WARNING: may affect stability)
+- **system_panel()** // Display GUI system information panel with optimize button
+- **FileConverter.png_to_jpg(png_file, jpg_file) -> str** // Convert PNG to JPG
+- **FileConverter.jpg_to_png(jpg_file, png_file) -> str** // Convert JPG to PNG
+- **FileConverter.txt_to_pdf(txt_file, pdf_file) -> str** // Convert TXT to PDF
+- **FileConverter.pdf_to_txt(pdf_file, txt_file) -> str** // Convert PDF to TXT
+- **FileConverter.jpgs_to_pdf(jpg_files, pdf_file) -> str** // Convert multiple JPGs to single PDF
+- **FileConverter.pdf_to_jpgs(pdf_file, jpg_files) -> str** // Convert PDF to multiple JPGs
+- **Circle(radius, T, N, t)** // Helper class for circle calculations
+  - **Circle.calculate_v(radius, T) -> float** // Calculate velocity (circumference)
+  - **Circle.calculate_T(t, N, n) -> float** // Calculate period T
+  - **Circle.calculate_n(N, t) -> float** // Calculate frequency n
+  - **Circle.calculate_N(n, t) -> float** // Calculate number of rotations N
+  - **Circle.calculate_t(N, t) -> float** // Calculate time t
 
 # 👨‍💻 About Me
 
