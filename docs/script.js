@@ -122,6 +122,10 @@ function translateToRussian() {
         'Get CPU usage information': 'Получение информации о использовании CPU',
         'System information panel': 'Панель информации о системе',
         'In this class, you can convert files from one format to another(png -> jpg, jpg -> png, etc.)': 'В этом классе вы можете конвертировать файлы из одного формата в другой (png -> jpg, jpg -> png, и т.д.)',
+        'News': 'Новости',
+        'Version 1.7.0': 'Версия 1.7.0',
+        'Added new functions like system_panel()': 'Добавлены новые функции, такие как system_panel()',
+        'Class with gui functions, like converter(mode) or gui() - universal GUI launcher': 'Класс с функциями GUI, такие как converter(mode) или gui() - универсальный запуск GUI',
     };
 
     document.querySelectorAll('*:not(script):not(style)').forEach(element => {

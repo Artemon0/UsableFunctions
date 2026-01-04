@@ -83,8 +83,6 @@ p {
     transition: color var(--transition-time);
     font-weight: normal;
     line-height: 1.6;
-    word-wrap: break-word;
-    max-width: 800px;
     
 }
 
