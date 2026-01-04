@@ -81,6 +81,11 @@ p {
     font-size: 1.1rem;
     color: var(--text-color);
     transition: color var(--transition-time);
+    font-weight: normal;
+    line-height: 1.6;
+    word-wrap: break-word;
+    max-width: 800px;
+    
 }
 
 /* Buttons */
@@ -419,3 +424,24 @@ input:checked+.slider:before {
         justify-content: center;
     }
 }
+
+.news-item {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 10px;
+    margin: 2rem 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: background-color var(--transition-time);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.news-item:hover {
+    transform: translateY(-5px);
+    /* how to make this beautifully? */
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
