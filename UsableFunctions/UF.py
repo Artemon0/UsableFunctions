@@ -8,6 +8,8 @@ This module provides various utilities including:
 - Python package management
 - File conversion (py to exe)
 - User authentication helpers
+- System information
+- GUI functions
 """
 
 import math
@@ -20,6 +22,8 @@ import time
 import socket
 import uuid
 import psutil
+import requests
+import Fernet
 import tkinter as tk
 
 import PyInstaller.__main__
@@ -946,7 +950,7 @@ class UsableFunctions:
             @staticmethod
             def converter(mode="png_to_jpg"):
                 """Universal GUI Launcher for Converters."""
-                from tkinter import filedialog, messagebox, Toplevel # Added Toplevel
+                from tkinter import filedialog, messagebox, Toplevel  # Added Toplevel
                 import os
 
                 configs = {
@@ -984,7 +988,7 @@ class UsableFunctions:
 
                 conf = configs.get(mode)
                 # Use Toplevel so it doesn't create a second main application instance
-                root = Toplevel() 
+                root = Toplevel()
                 root.title(conf["title"])
                 root.geometry("450x200")
 
@@ -1007,9 +1011,11 @@ class UsableFunctions:
                 def run():
                     inp = path_var.get()
                     if not inp:
-                        messagebox.showwarning("Warning", "Please select an input file.")
+                        messagebox.showwarning(
+                            "Warning", "Please select an input file."
+                        )
                         return
-                    
+
                     # Determine the output path based on the first selected file
                     first_file = inp.split("\n")[0]
                     out = os.path.splitext(first_file)[0] + conf["out"]
@@ -1031,10 +1037,14 @@ class UsableFunctions:
                     except Exception as e:
                         messagebox.showerror("Exception", str(e))
 
-                tk.Label(root, text=conf["title"], font=("Arial", 12, "bold")).pack(pady=10)
+                tk.Label(root, text=conf["title"], font=("Arial", 12, "bold")).pack(
+                    pady=10
+                )
                 frame = tk.Frame(root)
                 frame.pack()
-                tk.Entry(frame, textvariable=path_var, width=35).pack(side=tk.LEFT, padx=5)
+                tk.Entry(frame, textvariable=path_var, width=35).pack(
+                    side=tk.LEFT, padx=5
+                )
                 tk.Button(frame, text="Browse", command=browse).pack(side=tk.LEFT)
                 tk.Button(
                     root, text="Convert Now", bg="green", fg="white", command=run
@@ -1122,3 +1132,41 @@ class UsableFunctions:
                     frame, text="Quit", command=root.quit, bg="#FFCCCB", fg="black"
                 ).grid(row=2, column=1, padx=5, pady=5)
                 root.mainloop()
+
+    @staticmethod
+    def download_file(url: str, file_path: str):
+        """Download a file from a URL."""
+        response = requests.get(url, stream=True)
+        if response.status_code == 200:
+            with open(file_path, "wb") as file:
+                for chunk in response.iter_content(chunk_size=1024):
+                    if chunk:
+                        file.write(chunk)
+            return "Success"
+        else:
+            return f"Failed to download. Status Code: {response.status_code}"
+
+    @staticmethod
+    def encrypt_file(file_path: str, key: str):
+        """Encrypt a file using AES encryption."""
+        cipher = Fernet(key)
+        with open(file_path, "rb") as file:
+            data = file.read()
+        encrypted_data = cipher.encrypt(data)
+        with open(file_path, "wb") as file:
+            file.write(encrypted_data)
+
+    @staticmethod
+    def decrypt_file(file_path: str, key: str):
+        """Decrypt a file using AES decryption."""
+        cipher = Fernet(key)
+        with open(file_path, "rb") as file:
+            encrypted_data = file.read()
+        decrypted_data = cipher.decrypt(encrypted_data)
+        with open(file_path, "wb") as file:
+            file.write(decrypted_data)
+
+    @staticmethod
+    def compress_folder(folder_path: str, archive_file_path: str, password: str = ""):
+        """Compress a folder using shutil."""
+        shutil.make_archive(archive_file_path, "zip", folder_path, password=password)
