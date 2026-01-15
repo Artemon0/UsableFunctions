@@ -34,6 +34,8 @@ dependencies = [
     "fpdf>=1.7.0",
     "PyPDF2>=3.0.0",
     "pdf2image>=1.16.0",
+    "requests>= 2.27.1",
+    "Fernet>=1.0.1"
 ]
 
 [project.urls]
