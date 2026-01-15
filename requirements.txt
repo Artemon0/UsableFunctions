@@ -7,4 +7,3 @@ fpdf
 PyPDF2
 pdf2image
 requests
-Fernet
