@@ -108,7 +108,6 @@ Visit our [documentation website](https://artemon0.github.io/UsableFunctions/) f
 
 # 👨‍💻 About Me
 
-I am Artem, 12 y.o. Python developer.
+I am Artem, 13 y.o. Python developer.
 - **Telegram:** [@Artemon0000](https://t.me/Artemon0000)
-- **Channel:** [Telegram](https://t.me/AOGames888)
 - **GitHub:** [Artemon0](https://github.com/Artemon0)
