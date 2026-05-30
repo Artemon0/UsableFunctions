@@ -7,7 +7,7 @@ A collection of utility functions for common programming tasks in Python.
 [![GitHub last commit](https://img.shields.io/github/last-commit/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions/commits/main)
 [![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)](https://www.python.org/downloads/)
 [![GitHub repo size](https://img.shields.io/github/repo-size/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions)
-[![License](https://img.shields.io/github/license/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions/blob/main/LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Installation
 
