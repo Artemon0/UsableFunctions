@@ -2,6 +2,13 @@
 
 A collection of utility functions for common programming tasks in Python.
 
+[![GitHub stars](https://img.shields.io/github/stars/Artemon0/UsableFunctions?style=social)](https://github.com/Artemon0/UsableFunctions/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/Artemon0/UsableFunctions?style=social)](https://github.com/Artemon0/UsableFunctions/network/members)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions/commits/main)
+[![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)](https://www.python.org/downloads/)
+[![GitHub repo size](https://img.shields.io/github/repo-size/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions)
+[![License](https://img.shields.io/github/license/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions/blob/main/LICENSE)
+
 ## Installation
 
 ### From GitHub (recommended)
