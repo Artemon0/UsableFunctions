@@ -715,26 +715,66 @@ class UsableFunctions:
         }
 
     @staticmethod
-    def optimize_system() -> str:  # i need MORE FUNCTIONS IN THIS func
-        """Optimize system performance by clearing memory cache. WARNING: Use with caution! This may affect system stability and you need to reload the internet(like me)."""
+    def optimize_system() -> {str, bool | str}:
+        """
+        Optimize system performance by clearing memory, DNS, temp files, and Recycle Bin.
+        """
         try:
             if sys.platform == "win32":
-                os.system("echo off | clip")  # Clear clipboard
-                os.system("ipconfig /flushdns")  # Flush DNS cache
-                os.system("ipconfig /release")  # Release IP address
-                # I need to stop process before cleaing temp files(can't clear!)
-                os.system("ipconfig /flushdns")  # Flush DNS cache
+                import ctypes
 
-                os.system("del /q %temp%\\*")  # Delete temporary files
-                os.system("taskkill /f /im explorer.exe")  # Restart Explorer process
-                os.system("start explorer")
-            elif sys.platform == "linux" or sys.platform == "darwin":
-                os.system(
-                    "sync; echo 3 > /proc/sys/vm/drop_caches"
-                )  # Clear cache (Linux)
-            return "System optimized successfully"
+                # 1. Clear clipboard (use shell=True due to the pipe operator '|')
+                subprocess.run("echo off | clip", shell=True, capture_output=True)
+
+                # 2. Network optimization
+                subprocess.run(["ipconfig", "/flushdns"], capture_output=True)
+                subprocess.run(["ipconfig", "/release"], capture_output=True)
+                subprocess.run(
+                    ["ipconfig", "/renew"], capture_output=True
+                )  # Restores internet connection
+
+                # 3. Clean Temp files using pure Python
+                # This fixes the "can't clear!" issue by safely skipping currently locked files
+                temp_dir = os.environ.get("TEMP")
+                if temp_dir and os.path.exists(temp_dir):
+                    for root, dirs, files in os.walk(temp_dir):
+                        for file in files:
+                            try:
+                                os.remove(os.path.join(root, file))
+                            except Exception:
+                                continue  # File is locked, skip it
+                        for folder in dirs:
+                            try:
+                                shutil.rmtree(os.path.join(root, folder))
+                            except Exception:
+                                continue  # Folder is locked, skip it
+
+                # 4. NEW FEATURE: Empty Windows Recycle Bin silently
+                # Flag 7 means: SHERB_NOCONFIRMATION | SHERB_NOPROGRESSUI | SHERB_NOSOUND
+                try:
+                    ctypes.windll.shell32.SHEmptyRecycleBinW(None, None, 7)
+                except Exception:
+                    pass
+
+                # 5. Restart Windows Explorer safely
+                subprocess.run(
+                    ["taskkill", "/f", "/im", "explorer.exe"], capture_output=True
+                )
+                # Use Popen instead of run so the script doesn't freeze waiting for explorer window to close
+                subprocess.Popen(["explorer.exe"])
+
+            elif sys.platform in ("linux", "darwin"):
+                # Use shell=True for command chains with ';' and redirection '>'
+                subprocess.run(
+                    "sync; echo 3 > /proc/sys/vm/drop_caches",
+                    shell=True,
+                    capture_output=True,
+                )
+
+            return {"sucess": True, "error": False}
+
         except Exception as e:
-            return f"Optimization failed: {e}"
+            return {"sucess": False, "error": e}
 
     @staticmethod
     def get_disk_info() -> dict[str, str]:
@@ -1149,3 +1189,70 @@ class UsableFunctions:
     def compress_folder(folder_path: str, archive_file_path: str, password: str = ""):
         """Compress a folder using shutil."""
         shutil.make_archive(archive_file_path, "zip", folder_path, password=password)
+
+    @staticmethod
+    def function_time(function: object) -> float:
+        time_b = time.time()
+        function()
+        time_a = time.time()
+        return time_b - time_a
+
+    @staticmethod
+    def get_file_hash(filepath: str, algorithm: str = "sha256") -> str:
+        """Computing hash (sha256, md5 and others)."""
+        import hashlib
+
+        if not os.path.exists(filepath):
+            return "Error: File does not exist"
+        try:
+            hash_func = hashlib.new(algorithm)
+            with open(filepath, "rb") as f:
+                for chunk in iter(lambda: f.read(4096), b""):
+                    hash_func.update(chunk)
+            return hash_func.hexdigest()
+        except Exception as e:
+            return f"Error: {e}"
+
+    @staticmethod
+    def get_external_ip() -> str:
+        """Get your public IP using shared API"""
+        try:
+            return requests.get("https://api.ipify.org", timeout=5).text
+        except Exception as e:
+            return f"Error (No internet?): {e}"
+
+    @staticmethod
+    def ping_host(host: str = "8.8.8.8") -> bool:
+        """Check host"""
+        import platform
+
+        param = "-n" if platform.system().lower() == "windows" else "-c"
+        command = ["ping", param, "1", host]
+        return (
+            subprocess.run(
+                command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            ).returncode
+            == 0
+        )
+
+    @staticmethod
+    def extract_archive(archive_path: str, extract_to: str = ".") -> str:
+        """Unzip .zip archive."""
+        try:
+            shutil.unpack_archive(archive_path, extract_to)
+            return "Success"
+        except Exception as e:
+            return f"Error: {e}"
+
+    @staticmethod
+    def get_folder_size(folder_path: str) -> str:
+        """Get folder size in MB."""
+        size = 0
+        if not os.path.exists(folder_path):
+            return "Folder does not exist"
+        for dirpath, dirnames, filenames in os.walk(folder_path):
+            for f in filenames:
+                fp = os.path.join(dirpath, f)
+                if os.path.exists(fp):
+                    total_size += os.path.getsize(fp)
+        return f"{round(size / (1024**2), 2)} MB"

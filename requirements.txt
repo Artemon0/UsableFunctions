@@ -1,6 +1,6 @@
 tqdm
 PyInstaller
-pygame
+pygame-ce
 psutil
 Pillow
 fpdf
