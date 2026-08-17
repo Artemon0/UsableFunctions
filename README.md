@@ -29,6 +29,13 @@ A single-import Python toolkit that bundles the utility functions you end up rew
 
 ---
 
+[![GitHub stars](https://img.shields.io/github/stars/Artemon0/UsableFunctions?style=social)](https://github.com/Artemon0/UsableFunctions/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/Artemon0/UsableFunctions?style=social)](https://github.com/Artemon0/UsableFunctions/network/members)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions/commits/main)
+[![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)](https://www.python.org/downloads/)
+[![GitHub repo size](https://img.shields.io/github/repo-size/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 ## Installation
 
 ### From GitHub (recommended)
@@ -233,8 +240,11 @@ A few directions that would fit the existing style of the library:
 
 I'm Artem, a Python developer working on open-source tools and libraries.
 
+<<<<<<< HEAD
+=======
+I am Artem, 13 y.o. Python & C# developer.
+>>>>>>> fb4362ee2e9720df27bdcf3afbef0a32127c118c
 - **Telegram:** [@Artemon0000](https://t.me/Artemon0000)
-- **Channel:** [Telegram](https://t.me/AOGames888)
 - **GitHub:** [Artemon0](https://github.com/Artemon0)
 
 Русская версия документации: [README_ru.md](README_ru.md)
