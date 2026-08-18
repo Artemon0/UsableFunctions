@@ -3,12 +3,22 @@ name: Python Package CI
 on:
   push:
     branches: [ main ]
+
   pull_request:
     branches: [ main ]
+
+
+concurrency:
+  group: package-release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
 
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -16,61 +26,170 @@ jobs:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -e .
-    
-    - name: Test import
-      run: |
-        python -c "from UsableFunctions import UsableFunctions; uf = UsableFunctions(); print('[OK] Import successful'); print('Calculator test: 5 + 7 = ' + str(uf.calculator(5, 7, '+')))"
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  build:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Test import
+        run: |
+          python -c "from UsableFunctions import UsableFunctions; uf = UsableFunctions(); print('[OK] Import successful'); print('Calculator test: 5 + 7 = ' + str(uf.calculator(5, 7, '+')))"
+
+
+  release:
+    name: Build and Release
     needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.13'
-    
-    - name: Install build dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade build setuptools wheel twine
-    
-    - name: Build package
-      run: |
-        # Clean up any existing builds
-        rm -rf build dist *.egg-info
-        
-        # Create dist directory if it doesn't exist
-        mkdir -p dist
-        
-        # Build the package using setup.py directly
-        python setup.py sdist bdist_wheel
-        
-        # List built packages
-        echo "Built packages:"
-        ls -la dist/
-    
-    - name: Check package
-      run: |
-        # Check the built package
-        twine check dist/*
-    
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: dist-packages
-        path: dist/
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Calculate version
+        id: version
+        shell: bash
+        run: |
+          git fetch --tags --force
+
+          latest_tag=$(git tag --list 'v1.7.*' --sort=-version:refname | head -n 1)
+
+          if [ -z "$latest_tag" ]; then
+            version="1.7.0"
+          else
+            latest_version="${latest_tag#v}"
+            patch=$(echo "$latest_version" | cut -d. -f3)
+            next_patch=$((patch + 1))
+            version="1.7.${next_patch}"
+          fi
+
+          echo "Version: $version"
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Update package version
+        env:
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          python - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+
+          version = os.environ["PACKAGE_VERSION"]
+          setup_py = Path("setup.py")
+
+          if not setup_py.exists():
+              raise SystemExit("setup.py not found")
+
+          text = setup_py.read_text(encoding="utf-8")
+
+          # Replace:
+          # version="1.7.0"
+          # version='1.7.0'
+          text, count = re.subn(
+              r'(\bversion\s*=\s*[\'"])[^\'"]+([\'"])',
+              rf'\g<1>{version}\g<2>',
+              text,
+              count=1
+          )
+
+          if count != 1:
+              raise SystemExit(
+                  "Could not find version=... in setup.py"
+              )
+
+          setup_py.write_text(text, encoding="utf-8")
+
+          print(f"Package version set to {version}")
+          PY
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade build setuptools wheel twine
+
+      - name: Clean previous builds
+        run: |
+          rm -rf build
+          rm -rf dist
+          rm -rf ./*.egg-info
+
+      - name: Build package
+        run: |
+          python -m build
+
+          echo "Built packages:"
+          ls -lah dist/
+
+      - name: Check package
+        run: |
+          twine check dist/*
+
+      - name: Verify package version
+        env:
+          EXPECTED_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          python - <<'PY'
+          import os
+          import glob
+          import zipfile
+          import tarfile
+
+          expected = os.environ["EXPECTED_VERSION"]
+
+          files = glob.glob("dist/*")
+
+          if not files:
+              raise SystemExit("No packages found in dist/")
+
+          print("Checking package versions...")
+
+          for path in files:
+              filename = path.split("/")[-1]
+
+              if expected not in filename:
+                  raise SystemExit(
+                      f"Wrong version in package: {filename}. "
+                      f"Expected {expected}"
+                  )
+
+              print(f"[OK] {filename}")
+
+          PY
+
+      - name: Create Git tag
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git tag -a "v${VERSION}" -m "Release v${VERSION}"
+          git push origin "v${VERSION}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          generate_release_notes: true
+          files: |
+            dist/*.whl
+            dist/*.tar.gz
