@@ -2,14 +2,13 @@ name: Python Package CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
   pull_request:
-    branches: [ main ]
-
+    branches: [main]
 
 concurrency:
-  group: package-release
+  group: python-package-release
   cancel-in-progress: false
 
 permissions:
@@ -17,13 +16,23 @@ permissions:
 
 jobs:
   test:
+    name: Test Python ${{ matrix.python-version }} on ${{ matrix.os }}
+
     runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+        python-version:
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
 
     steps:
       - name: Checkout
@@ -34,7 +43,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
+      - name: Install package
         run: |
           python -m pip install --upgrade pip
           pip install -e .
@@ -47,6 +56,7 @@ jobs:
   release:
     name: Build and Release
     needs: test
+
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     runs-on: ubuntu-latest
@@ -62,7 +72,7 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Calculate version
+      - name: Calculate next version
         id: version
         shell: bash
         run: |
@@ -79,11 +89,12 @@ jobs:
             version="1.7.${next_patch}"
           fi
 
-          echo "Version: $version"
+          echo "Latest tag: ${latest_tag:-none}"
+          echo "New version: $version"
 
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Update package version
+      - name: Set package version
         env:
           PACKAGE_VERSION: ${{ steps.version.outputs.version }}
         run: |
@@ -93,39 +104,58 @@ jobs:
           from pathlib import Path
 
           version = os.environ["PACKAGE_VERSION"]
-          setup_py = Path("setup.py")
 
-          if not setup_py.exists():
-              raise SystemExit("setup.py not found")
+          path = Path("pyproject.toml")
+          text = path.read_text(encoding="utf-8")
 
-          text = setup_py.read_text(encoding="utf-8")
+          pattern = r'(?m)^version\s*=\s*"[^"]+"$'
 
-          # Replace:
-          # version="1.7.0"
-          # version='1.7.0'
-          text, count = re.subn(
-              r'(\bversion\s*=\s*[\'"])[^\'"]+([\'"])',
-              rf'\g<1>{version}\g<2>',
+          new_text, count = re.subn(
+              pattern,
+              f'version = "{version}"',
               text,
               count=1
           )
 
           if count != 1:
-              raise SystemExit(
-                  "Could not find version=... in setup.py"
+              raise RuntimeError(
+                  "Could not find project version in pyproject.toml"
               )
 
-          setup_py.write_text(text, encoding="utf-8")
+          path.write_text(new_text, encoding="utf-8")
 
           print(f"Package version set to {version}")
+          PY
+
+      - name: Verify package version
+        env:
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          python - <<'PY'
+          import os
+          import tomllib
+
+          expected = os.environ["PACKAGE_VERSION"]
+
+          with open("pyproject.toml", "rb") as f:
+              data = tomllib.load(f)
+
+          actual = data["project"]["version"]
+
+          if actual != expected:
+              raise RuntimeError(
+                  f"Version mismatch: expected {expected}, got {actual}"
+              )
+
+          print(f"[OK] Package version: {actual}")
           PY
 
       - name: Install build dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --upgrade build setuptools wheel twine
+          pip install --upgrade build twine
 
-      - name: Clean previous builds
+      - name: Clean build directories
         run: |
           rm -rf build
           rm -rf dist
@@ -142,36 +172,37 @@ jobs:
         run: |
           twine check dist/*
 
-      - name: Verify package version
+      - name: Verify built packages
         env:
-          EXPECTED_VERSION: ${{ steps.version.outputs.version }}
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
         run: |
           python - <<'PY'
           import os
-          import glob
-          import zipfile
-          import tarfile
+          from pathlib import Path
 
-          expected = os.environ["EXPECTED_VERSION"]
+          version = os.environ["PACKAGE_VERSION"]
 
-          files = glob.glob("dist/*")
+          expected_wheel = f"UsableFunctions-{version}-py3-none-any.whl"
+          expected_sdist = f"UsableFunctions-{version}.tar.gz"
 
-          if not files:
-              raise SystemExit("No packages found in dist/")
+          files = {file.name for file in Path("dist").iterdir()}
 
-          print("Checking package versions...")
+          print("Built files:")
+          for file in sorted(files):
+              print(f"  {file}")
 
-          for path in files:
-              filename = path.split("/")[-1]
+          if expected_wheel not in files:
+              raise RuntimeError(
+                  f"Missing wheel: {expected_wheel}"
+              )
 
-              if expected not in filename:
-                  raise SystemExit(
-                      f"Wrong version in package: {filename}. "
-                      f"Expected {expected}"
-                  )
+          if expected_sdist not in files:
+              raise RuntimeError(
+                  f"Missing source distribution: {expected_sdist}"
+              )
 
-              print(f"[OK] {filename}")
-
+          print("[OK] Wheel found")
+          print("[OK] Source distribution found")
           PY
 
       - name: Create Git tag
@@ -188,7 +219,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}
-          name: v${{ steps.version.outputs.version }}
+          name: UsableFunctions v${{ steps.version.outputs.version }}
           generate_release_notes: true
           files: |
             dist/*.whl
