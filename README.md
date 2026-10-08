@@ -1,7 +1,7 @@
 # UsableFunctions
 
 [![Version](https://img.shields.io/badge/version-1.7.0-blue.svg)](https://github.com/Artemon0/UsableFunctions)
-[![License: GPL v3](https://img.shields.io/badge/license-GPLv3-green.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/github/license/Artemon0/UsableFunctions)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
 
 A single-import Python toolkit that bundles the utility functions you end up rewriting in every project: math helpers, file operations, package management, system/network info, file conversion, and a couple of small games.
