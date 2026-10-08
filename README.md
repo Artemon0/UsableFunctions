@@ -6,7 +6,7 @@
 
 A single-import Python toolkit that bundles the utility functions you end up rewriting in every project: math helpers, file operations, package management, system/network info, file conversion, and a couple of small games.
 
-**[📚 Full documentation & interactive examples](https://artemon0.github.io/UsableFunctions/)** — dark/light theme, EN/RU
+**[Full documentation & interactive examples](https://artemon0.github.io/UsableFunctions/)** — dark/light theme, EN/RU
 
 ---
 
@@ -239,11 +239,9 @@ A few directions that would fit the existing style of the library:
 ## About
 
 I'm Artem, a Python developer working on open-source tools and libraries.
-
-<<<<<<< HEAD
 =======
 I am Artem, 13 y.o. Python & C# developer.
->>>>>>> fb4362ee2e9720df27bdcf3afbef0a32127c118c
+
 - **Telegram:** [@Artemon0000](https://t.me/Artemon0000)
 - **GitHub:** [Artemon0](https://github.com/Artemon0)
 
