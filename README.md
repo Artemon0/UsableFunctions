@@ -1,8 +1,9 @@
 # UsableFunctions
 
-[![Version](https://img.shields.io/badge/version-1.7.0-blue.svg)](https://github.com/Artemon0/UsableFunctions)
-[![License: GPL v3](https://img.shields.io/github/license/Artemon0/UsableFunctions)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
+[![Version](https://img.shields.io/github/v/release/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions/releases)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![CI](https://github.com/Artemon0/UsableFunctions/actions/workflows/python-package.yml/badge.svg)](https://github.com/Artemon0/UsableFunctions/actions/workflows/python-package.yml)
 
 A single-import Python toolkit that bundles the utility functions you end up rewriting in every project: math helpers, file operations, package management, system/network info, file conversion, and a couple of small games.
 
@@ -13,6 +14,7 @@ A single-import Python toolkit that bundles the utility functions you end up rew
 ## Table of Contents
 
 - [Installation](#installation)
+- [Project structure](#project-structure)
 - [Quick Start](#quick-start)
 - [Function Reference](#function-reference)
   - [Math](#math)
@@ -32,16 +34,14 @@ A single-import Python toolkit that bundles the utility functions you end up rew
 [![GitHub stars](https://img.shields.io/github/stars/Artemon0/UsableFunctions?style=social)](https://github.com/Artemon0/UsableFunctions/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Artemon0/UsableFunctions?style=social)](https://github.com/Artemon0/UsableFunctions/network/members)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions/commits/main)
-[![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)](https://www.python.org/downloads/)
 [![GitHub repo size](https://img.shields.io/github/repo-size/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Installation
 
 ### From GitHub (recommended)
 
 ```bash
-pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git
+python -m pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git
 ```
 
 ### From source
@@ -49,22 +49,36 @@ pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git
 ```bash
 git clone https://github.com/Artemon0/UsableFunctions.git
 cd UsableFunctions
-pip install -e .
+python -m pip install -e .
 ```
 
 ### Development setup
 
 ```bash
-pip install -r requirements.txt
-python build.py all
+python -m pip install -e .
+python -m pip install build twine
+python devbuild.py test
 ```
+
+New tagged releases include a wheel and source archive on [GitHub Releases](https://github.com/Artemon0/UsableFunctions/releases).
+
+## Project structure
+
+- `UsableFunctions/UF.py` exposes the public class. Both `from UsableFunctions import UsableFunctions` and `from UsableFunctions.UF import UsableFunctions` work.
+- `math_utils.py` handles arithmetic and `Circle`. `games.py` contains console games and keyboard input.
+- `files.py` handles file operations, downloads, and archives. `converters.py` contains file converters and their Tkinter launcher.
+- `packages.py` installs and updates packages. `scripts.py` runs and bundles Python scripts.
+- `auth.py` contains demo credential helpers. `network.py` handles network information, and `system.py` contains system information and the system panel.
+- `tests/` contains package tests. `docs/` contains the documentation site.
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for CI and release instructions.
 
 ---
 
 ## Quick Start
 
 ```python
-from UsableFunctions.UF import UsableFunctions as u
+from UsableFunctions import UsableFunctions as u
 
 # Calculator
 result = u.calculator(5, 7, '+')          # 12
@@ -118,7 +132,7 @@ u.quest("Player1", difficulty=2)
 | `compress_folder(folder_path, archive_file_path, password="") -> None` | Zip a folder |
 | `extract_archive(archive_path, extract_to=".") -> str` | Extract a `.zip` archive |
 | `get_file_hash(filepath, algorithm="sha256") -> str` | Hash a file (`sha256`, `md5`, etc.) |
-| `get_folder_size(folder_path) -> str` | Total size of a folder, formatted in MB ⚠️ *see [Known Issues](#known-issues)* |
+| `get_folder_size(folder_path) -> str` | Total size of a folder, formatted in MB |
 
 ### File Conversion
 
@@ -134,8 +148,6 @@ All under `UsableFunctions.FileConverter`:
 | `FileConverter.gui.gui()` | Universal Tkinter GUI launcher for the converters above |
 | `FileConverter.gui.converter(mode="png_to_jpg")` | Open a specific converter's GUI directly |
 
-> Note: `pdf_to_jpgs` (PDF → multiple JPGs) is listed in older docs but isn't implemented yet — see [Ideas for New Functions](#ideas-for-new-functions).
-
 ### Packages & Scripts
 
 | Function | Description |
@@ -147,7 +159,7 @@ All under `UsableFunctions.FileConverter`:
 | `update_this_program_visual() -> str` | Same as above, with a `tqdm` progress bar |
 | `py_to_exe(file="main.py") -> str` | Bundle a `.py` script into a standalone `.exe` via PyInstaller |
 | `run_py_file(filepath="") -> str` | Run a Python file in a subprocess |
-| `run_py_file_with_args(filepath="", args=[]) -> str` | Same, with CLI arguments |
+| `run_py_file_with_args(filepath="", args=None) -> str` | Same, with CLI arguments |
 | `run_python_code(code) -> str` | Execute a Python code string |
 | `get_progress_bar(iterable, desc="Processing", ncols=60)` | Wrap an iterable in a `tqdm` progress bar |
 | `is_pressed(key) -> bool` | Check whether a key is currently pressed (via `pygame`) |
@@ -195,8 +207,7 @@ All under `UsableFunctions.FileConverter`:
 
 ## Known Issues
 
-- **`get_folder_size`** currently references an unset `total_size` variable instead of the initialized `size` accumulator, so it raises `NameError` at runtime rather than returning a value. Worth a quick fix before the next release.
-- **`pdf_to_jpgs`** is documented in some places but not implemented in `UF.py` — either implement it or drop it from the docs to avoid confusion.
+- **`compress_folder`** raises `TypeError` because `shutil.make_archive` does not accept a `password` argument.
 - **Auth helpers** (`token`, `users`, `register`, `check_password`) store/compare credentials in plain text with no hashing — fine for demos, risky if used for real accounts. Worth a one-line warning wherever these are documented (added above).
 
 ---
@@ -239,8 +250,6 @@ A few directions that would fit the existing style of the library:
 ## About
 
 I'm Artem, a Python developer working on open-source tools and libraries.
-=======
-I am Artem, 13 y.o. Python & C# developer.
 
 - **Telegram:** [@Artemon0000](https://t.me/Artemon0000)
 - **GitHub:** [Artemon0](https://github.com/Artemon0)

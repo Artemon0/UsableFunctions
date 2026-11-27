@@ -1,226 +1,116 @@
-name: Python Package CI
+name: Python package
 
 on:
-  push:
-    branches: [main]
-
   pull_request:
     branches: [main]
-
-concurrency:
-  group: python-package-release
-  cancel-in-progress: false
+  push:
+    branches: [main]
+    tags: ['[0-9]*']
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: package-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref_type != 'tag' }}
 
 jobs:
   test:
-    name: Test Python ${{ matrix.python-version }} on ${{ matrix.os }}
-
+    name: Python ${{ matrix.python-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-          - macos-latest
-
-        python-version:
-          - "3.10"
-          - "3.11"
-          - "3.12"
-          - "3.13"
-
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.10', '3.11', '3.12', '3.13']
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - run: python -m pip install -e .
+      - run: python -m pip check
+      - run: python -m unittest discover -s tests -v
 
-      - name: Install package
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e .
-
-      - name: Test import
-        run: |
-          python -c "from UsableFunctions import UsableFunctions; uf = UsableFunctions(); print('[OK] Import successful'); print('Calculator test: 5 + 7 = ' + str(uf.calculator(5, 7, '+')))"
-
-
-  release:
-    name: Build and Release
-    needs: test
-
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
+  build:
+    name: Build and verify distributions
     runs-on: ubuntu-latest
-
+    timeout-minutes: 15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+          fetch-depth: ${{ github.ref_type == 'tag' && '0' || '1' }}
+          persist-credentials: false
+      - uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
-
-      - name: Calculate next version
-        id: version
-        shell: bash
+          python-version: '3.13'
+      - name: Verify release tag
+        if: github.ref_type == 'tag'
         run: |
-          git fetch --tags --force
-
-          latest_tag=$(git tag --list 'v1.7.*' --sort=-version:refname | head -n 1)
-
-          if [ -z "$latest_tag" ]; then
-            version="1.7.0"
-          else
-            latest_version="${latest_tag#v}"
-            patch=$(echo "$latest_version" | cut -d. -f3)
-            next_patch=$((patch + 1))
-            version="1.7.${next_patch}"
-          fi
-
-          echo "Latest tag: ${latest_tag:-none}"
-          echo "New version: $version"
-
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-
-      - name: Set package version
-        env:
-          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
-        run: |
+          git merge-base --is-ancestor HEAD origin/main
           python - <<'PY'
           import os
           import re
-          from pathlib import Path
+          import runpy
 
-          version = os.environ["PACKAGE_VERSION"]
-
-          path = Path("pyproject.toml")
-          text = path.read_text(encoding="utf-8")
-
-          pattern = r'(?m)^version\s*=\s*"[^"]+"$'
-
-          new_text, count = re.subn(
-              pattern,
-              f'version = "{version}"',
-              text,
-              count=1
-          )
-
-          if count != 1:
-              raise RuntimeError(
-                  "Could not find project version in pyproject.toml"
-              )
-
-          path.write_text(new_text, encoding="utf-8")
-
-          print(f"Package version set to {version}")
+          tag = os.environ["GITHUB_REF_NAME"]
+          version = runpy.run_path("UsableFunctions/_metadata.py")["__version__"]
+          if not re.fullmatch(r"\d+\.\d+\.\d+", tag) or tag != version:
+              raise SystemExit(f"Release tag {tag!r} must match the package version {version!r} (X.Y.Z)")
           PY
-
-      - name: Verify package version
-        env:
-          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
+      - run: python -m pip install build twine ruff
+      - run: ruff check --select F UsableFunctions tests
+      - run: python -m build
+      - run: python -m twine check --strict dist/*
+      - name: Test the installed wheel outside the checkout
+        working-directory: ${{ runner.temp }}
         run: |
-          python - <<'PY'
-          import os
-          import tomllib
-
-          expected = os.environ["PACKAGE_VERSION"]
-
-          with open("pyproject.toml", "rb") as f:
-              data = tomllib.load(f)
-
-          actual = data["project"]["version"]
-
-          if actual != expected:
-              raise RuntimeError(
-                  f"Version mismatch: expected {expected}, got {actual}"
-              )
-
-          print(f"[OK] Package version: {actual}")
-          PY
-
-      - name: Install build dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install --upgrade build twine
-
-      - name: Clean build directories
-        run: |
-          rm -rf build
-          rm -rf dist
-          rm -rf ./*.egg-info
-
-      - name: Build package
-        run: |
-          python -m build
-
-          echo "Built packages:"
-          ls -lah dist/
-
-      - name: Check package
-        run: |
-          twine check dist/*
-
-      - name: Verify built packages
-        env:
-          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
-        run: |
-          python - <<'PY'
-          import os
-          from pathlib import Path
-
-          version = os.environ["PACKAGE_VERSION"]
-
-          expected_wheel = f"UsableFunctions-{version}-py3-none-any.whl"
-          expected_sdist = f"UsableFunctions-{version}.tar.gz"
-
-          files = {file.name for file in Path("dist").iterdir()}
-
-          print("Built files:")
-          for file in sorted(files):
-              print(f"  {file}")
-
-          if expected_wheel not in files:
-              raise RuntimeError(
-                  f"Missing wheel: {expected_wheel}"
-              )
-
-          if expected_sdist not in files:
-              raise RuntimeError(
-                  f"Missing source distribution: {expected_sdist}"
-              )
-
-          print("[OK] Wheel found")
-          print("[OK] Source distribution found")
-          PY
-
-      - name: Create Git tag
-        env:
-          VERSION: ${{ steps.version.outputs.version }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git tag -a "v${VERSION}" -m "Release v${VERSION}"
-          git push origin "v${VERSION}"
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+          python -m pip install "$GITHUB_WORKSPACE"/dist/*.whl
+          python -m pip check
+          python -m unittest discover -s "$GITHUB_WORKSPACE/tests" -v
+      - uses: actions/upload-artifact@v4
         with:
-          tag_name: v${{ steps.version.outputs.version }}
-          name: UsableFunctions v${{ steps.version.outputs.version }}
-          generate_release_notes: true
-          files: |
-            dist/*.whl
-            dist/*.tar.gz
+          name: python-distributions
+          path: dist/
+          if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    needs: [test, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: python-distributions
+          path: dist
+      - name: Publish verified distributions
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          assets=(dist/*.whl dist/*.tar.gz)
+          if release=$(gh release view "$GITHUB_REF_NAME" --json isDraft,assets); then
+            if jq -e '.isDraft' <<< "$release" > /dev/null; then
+              gh release upload "$GITHUB_REF_NAME" "${assets[@]}" --clobber
+              gh release edit "$GITHUB_REF_NAME" --draft=false
+            else
+              for asset in "${assets[@]}"; do
+                jq -e --arg name "${asset##*/}" 'any(.assets[]; .name == $name)' \
+                  <<< "$release" > /dev/null
+              done
+              echo "Release already contains both distributions."
+            fi
+          else
+            gh release create "$GITHUB_REF_NAME" "${assets[@]}" \
+              --verify-tag --title "UsableFunctions $GITHUB_REF_NAME" --generate-notes
+          fi

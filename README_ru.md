@@ -1,8 +1,9 @@
 # UsableFunctions
 
-[![Version](https://img.shields.io/badge/version-1.7.0-blue.svg)](https://github.com/Artemon0/UsableFunctions)
-[![License: GPL v3](https://img.shields.io/badge/license-GPLv3-green.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
+[![Version](https://img.shields.io/github/v/release/Artemon0/UsableFunctions)](https://github.com/Artemon0/UsableFunctions/releases)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![CI](https://github.com/Artemon0/UsableFunctions/actions/workflows/python-package.yml/badge.svg)](https://github.com/Artemon0/UsableFunctions/actions/workflows/python-package.yml)
 
 Python-библиотека, которую нужно импортировать один раз — и получить набор функций, которые обычно переписываешь в каждом новом проекте: математика, работа с файлами, управление пакетами, системная и сетевая информация, конвертация файлов и пара небольших игр.
 
@@ -13,6 +14,7 @@ Python-библиотека, которую нужно импортироват�
 ## Содержание
 
 - [Установка](#установка)
+- [Структура проекта](#структура-проекта)
 - [Быстрый старт](#быстрый-старт)
 - [Справочник функций](#справочник-функций)
   - [Математика](#математика)
@@ -34,7 +36,7 @@ Python-библиотека, которую нужно импортироват�
 ### С GitHub (рекомендуется)
 
 ```bash
-pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git
+python -m pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git
 ```
 
 ### Из исходников
@@ -42,22 +44,36 @@ pip install --upgrade git+https://github.com/Artemon0/UsableFunctions.git
 ```bash
 git clone https://github.com/Artemon0/UsableFunctions.git
 cd UsableFunctions
-pip install -e .
+python -m pip install -e .
 ```
 
 ### Настройка для разработки
 
 ```bash
-pip install -r requirements.txt
-python build.py all
+python -m pip install -e .
+python -m pip install build twine
+python devbuild.py test
 ```
+
+Новые релизы с тегом будут включать wheel и исходный архив на странице [GitHub Releases](https://github.com/Artemon0/UsableFunctions/releases).
+
+## Структура проекта
+
+- `UsableFunctions/UF.py` содержит публичный класс. Оба импорта работают: `from UsableFunctions import UsableFunctions` и `from UsableFunctions.UF import UsableFunctions`.
+- `math_utils.py` содержит арифметику и `Circle`, `games.py` — консольные игры и обработку клавиш.
+- `files.py` отвечает за файлы, загрузки и архивы, `converters.py` — за конвертацию и её окно Tkinter.
+- `packages.py` управляет пакетами, `scripts.py` — запуском и сборкой Python-скриптов.
+- `auth.py` содержит учебные функции проверки данных, `network.py` — сетевые функции, `system.py` — информацию о системе и системную панель.
+- `tests/` содержит тесты пакета, `docs/` — сайт документации.
+
+Проверки и публикация описаны в [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ---
 
 ## Быстрый старт
 
 ```python
-from UsableFunctions.UF import UsableFunctions as u
+from UsableFunctions import UsableFunctions as u
 
 # Калькулятор
 result = u.calculator(5, 7, '+')          # 12
@@ -111,7 +127,7 @@ u.quest("Player1", difficulty=2)
 | `compress_folder(folder_path, archive_file_path, password="") -> None` | Заархивировать папку |
 | `extract_archive(archive_path, extract_to=".") -> str` | Распаковать `.zip`-архив |
 | `get_file_hash(filepath, algorithm="sha256") -> str` | Хеш файла (`sha256`, `md5` и др.) |
-| `get_folder_size(folder_path) -> str` | Суммарный размер папки в МБ ⚠️ *см. [Известные проблемы](#известные-проблемы)* |
+| `get_folder_size(folder_path) -> str` | Суммарный размер папки в МБ |
 
 ### Конвертация файлов
 
@@ -127,8 +143,6 @@ u.quest("Player1", difficulty=2)
 | `FileConverter.gui.gui()` | Универсальный GUI-лаунчер (Tkinter) для конвертеров выше |
 | `FileConverter.gui.converter(mode="png_to_jpg")` | Открыть GUI конкретного конвертера напрямую |
 
-> Примечание: `pdf_to_jpgs` (PDF → несколько JPG) упоминается в старой документации, но пока не реализован — см. [Идеи для новых функций](#идеи-для-новых-функций).
-
 ### Пакеты и скрипты
 
 | Функция | Описание |
@@ -140,7 +154,7 @@ u.quest("Player1", difficulty=2)
 | `update_this_program_visual() -> str` | То же самое, но с прогресс-баром `tqdm` |
 | `py_to_exe(file="main.py") -> str` | Собрать `.py`-скрипт в отдельный `.exe` через PyInstaller |
 | `run_py_file(filepath="") -> str` | Запустить Python-файл в подпроцессе |
-| `run_py_file_with_args(filepath="", args=[]) -> str` | То же самое, но с аргументами командной строки |
+| `run_py_file_with_args(filepath="", args=None) -> str` | То же самое, но с аргументами командной строки |
 | `run_python_code(code) -> str` | Выполнить строку с Python-кодом |
 | `get_progress_bar(iterable, desc="Processing", ncols=60)` | Обернуть итерируемый объект в прогресс-бар `tqdm` |
 | `is_pressed(key) -> bool` | Проверить, нажата ли клавиша сейчас (через `pygame`) |
@@ -188,8 +202,7 @@ u.quest("Player1", difficulty=2)
 
 ## Известные проблемы
 
-- **`get_folder_size`** сейчас обращается к неинициализированной переменной `total_size` вместо заведённого аккумулятора `size`, из-за чего функция падает с `NameError` вместо возврата значения. Стоит поправить перед следующим релизом.
-- **`pdf_to_jpgs`** упоминается в некоторых местах документации, но не реализован в `UF.py` — либо реализовать, либо убрать из документации во избежание путаницы.
+- **`compress_folder`** передаёт параметр `password`, которого нет у `shutil.make_archive`, и завершается с `TypeError`.
 - **Хелперы авторизации** (`token`, `users`, `register`, `check_password`) хранят и сравнивают учётные данные в открытом виде без хеширования — нормально для демо, рискованно для реальных аккаунтов. Стоит везде, где они упоминаются, добавить короткое предупреждение (уже добавлено выше).
 
 ---

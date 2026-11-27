@@ -1,9 +1,1 @@
-tqdm
-PyInstaller
-pygame-ce
-psutil
-Pillow
-fpdf
-PyPDF2
-pdf2image
-requests
+.

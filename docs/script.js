@@ -1,108 +1,144 @@
-// Theme Management
-function initializeTheme() {
-    const themeSwitch = document.getElementById('themeSwitch');
-    // Default to light theme if no theme is saved
-    const savedTheme = localStorage.getItem('theme') || 'light';
+const root = document.documentElement;
+const themeSwitch = document.querySelector("#theme-switch");
+const languageSwitch = document.querySelector("#language-switch");
+const search = document.querySelector("#reference-search");
+const empty = document.querySelector("#reference-empty");
+const announcements = document.querySelector("#announcements");
+const fullReference = document.querySelector("#full-reference");
+const groups = Array.from(document.querySelectorAll(".api-group"), (section) => ({
+    section,
+    link: document.querySelector('.topics a[href="#' + section.id + '"]'),
+    rows: Array.from(section.querySelectorAll(".api-row")),
+}));
 
-    // Apply the saved theme or default to light
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    themeSwitch.checked = savedTheme === 'dark';
+let language = "en";
+let translations = {};
 
-    themeSwitch.addEventListener('change', function (e) {
-        if (e.target.checked) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
+function loadPreference(name) {
+    try {
+        return localStorage.getItem(name);
+    } catch {
+        return null;
+    }
+}
+
+function savePreference(name, value) {
+    try {
+        localStorage.setItem(name, value);
+    } catch {
+        // The control remains usable with storage blocked.
+    }
+}
+
+function setTheme(theme) {
+    root.dataset.theme = theme;
+    themeSwitch.setAttribute("aria-pressed", String(theme === "dark"));
+}
+
+themeSwitch.hidden = false;
+setTheme(root.dataset.theme === "dark" ? "dark" : "light");
+themeSwitch.addEventListener("click", () => {
+    const theme = root.dataset.theme === "dark" ? "light" : "dark";
+    setTheme(theme);
+    savePreference("theme", theme);
+});
+
+function updateTopics() {
+    for (const { link, section } of groups) {
+        if (location.hash === "#" + section.id) {
+            link.setAttribute("aria-current", "location");
         } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-            localStorage.setItem('theme', 'light');
+            link.removeAttribute("aria-current");
         }
-    });
+    }
 }
 
-// Smooth Scroll
-function initializeSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
+function filterReference() {
+    const query = search.value.trim().toLocaleLowerCase(language);
+    const tokens = query ? query.split(/\s+/) : [];
+    let hasResults = false;
+
+    for (const { section, link, rows } of groups) {
+        for (const row of rows) {
+            const text = row.textContent.toLocaleLowerCase(language);
+            row.hidden = !tokens.every((token) => text.includes(token));
+        }
+        const hasMatch = rows.some((row) => !row.hidden);
+        section.hidden = link.hidden = !hasMatch;
+        hasResults ||= hasMatch;
+    }
+    document.querySelector(".topics").hidden = !hasResults;
+    empty.hidden = hasResults;
 }
 
-// Localization
-// Translation strings live in locales.json, keyed by language code ("en", "ru", ...).
-// Adding a new language only requires adding a new key there - no JS changes needed
-// beyond wiring up a switch option if one isn't already exposed in the UI.
-let translations = null;
+search.closest(".search").hidden = false;
+search.addEventListener("input", filterReference);
+window.addEventListener("hashchange", updateTopics);
+updateTopics();
+
+function setLanguage(nextLanguage) {
+    language = nextLanguage;
+    root.lang = language;
+    const labels = translations[language];
+    for (const element of document.querySelectorAll("[data-i18n]")) {
+        element.textContent = labels[element.dataset.i18n];
+    }
+    for (const element of document.querySelectorAll("[data-i18n-label]")) {
+        element.setAttribute("aria-label", labels[element.dataset.i18nLabel]);
+    }
+    search.placeholder = labels[search.dataset.i18nPlaceholder];
+    languageSwitch.textContent = language.toUpperCase();
+    languageSwitch.setAttribute("aria-label", labels.language);
+    fullReference.href = language === "ru"
+        ? "https://github.com/Artemon0/UsableFunctions/blob/main/README_ru.md#справочник-функций"
+        : "https://github.com/Artemon0/UsableFunctions/blob/main/README.md#function-reference";
+    filterReference();
+}
 
 async function loadTranslations() {
-    if (translations) return translations;
     try {
-        const response = await fetch('locales.json');
+        const response = await fetch("locales.json");
+        if (!response.ok) return;
         translations = await response.json();
-    } catch (err) {
-        console.error('Failed to load locales.json, falling back to English only.', err);
-        translations = { en: {} };
+        setLanguage(loadPreference("language") === "ru" ? "ru" : "en");
+        languageSwitch.hidden = false;
+        languageSwitch.addEventListener("click", () => {
+            setLanguage(language === "en" ? "ru" : "en");
+            savePreference("language", language);
+        });
+    } catch {
+        // Keep the original English markup if the translations are unavailable.
     }
-    return translations;
 }
 
-function applyTranslations(lang) {
-    const dict = (translations && translations[lang]) || {};
+loadTranslations();
 
-    document.querySelectorAll('*:not(script):not(style)').forEach(element => {
-        if (element.tagName === 'P' || (element.childNodes.length === 1 && element.childNodes[0].nodeType === 3)) {
-            const text = element.textContent.trim();
-            if (dict[text]) {
-                element.textContent = dict[text];
-            }
-        }
+function announce(message) {
+    announcements.textContent = message;
+}
 
-        if (element.title && dict[element.title.trim()]) {
-            element.title = dict[element.title.trim()];
+for (const button of document.querySelectorAll("[data-copy]")) {
+    const source = document.getElementById(button.dataset.copy);
+    const label = button.querySelector("[data-i18n]");
+    let reset;
+    button.hidden = false;
+    button.addEventListener("click", async () => {
+        try {
+            await navigator.clipboard.writeText(source.textContent);
+            clearTimeout(reset);
+            const copied = translations[language]?.copied || "Copied";
+            label.textContent = copied;
+            announce(copied);
+            reset = setTimeout(() => {
+                label.textContent = translations[language]?.copy || "Copy";
+            }, 1600);
+        } catch {
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(source);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            announce(translations[language]?.["copy-failed"] || "Select and copy the code manually.");
         }
     });
 }
-
-// Language Management
-async function initializeLanguage() {
-    const langSwitch = document.getElementById('langSwitch');
-    const langText = document.querySelector('.lang-text');
-    const savedLang = localStorage.getItem('language') || 'en';
-
-    await loadTranslations();
-
-    if (savedLang === 'ru') {
-        langSwitch.checked = true;
-        langText.textContent = 'RU';
-        document.documentElement.setAttribute('lang', 'ru');
-        applyTranslations('ru');
-    }
-
-    langSwitch.addEventListener('change', async function (e) {
-        if (e.target.checked) {
-            langText.textContent = 'RU';
-            localStorage.setItem('language', 'ru');
-            document.documentElement.setAttribute('lang', 'ru');
-            await loadTranslations();
-            applyTranslations('ru');
-        } else {
-            // Reload to cleanly restore the original English text nodes.
-            langText.textContent = 'EN';
-            localStorage.setItem('language', 'en');
-            document.documentElement.setAttribute('lang', 'en');
-            window.location.reload();
-        }
-    });
-}
-
-// Initialize everything when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', function () {
-    initializeTheme();
-    initializeSmoothScroll();
-    initializeLanguage();
-    Prism.highlightAll();
-});
